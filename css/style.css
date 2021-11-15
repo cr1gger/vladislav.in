@@ -181,7 +181,6 @@ a.animated-button:link, a.animated-button:visited {
   -o-transition: all 1s ease;
   transition: all 1s ease;
 }
-
 .nav-menu{
   display:flex;
   flex-direction:row;
@@ -192,6 +191,63 @@ a.animated-button:link, a.animated-button:visited {
 .brand{
   top:30%;
 }
+.footer-social{
+  bottom: 10%;
+}
+.footer-social a > img {
+  filter: invert(1);
+}
+.footer-social a {
+  margin-right: 20px;
+}
+
+.vin-modal-container{
+  position: absolute;
+  top:0;
+  left:0;
+  z-index: 999;
+  width: 100%;
+  height: 100%;
+  align-items: center;
+  display: none;
+}
+.d-flex{
+  display: flex!important;
+}
+.d-block{
+  display: block!important;
+}
+.d-none{
+  display: none!important;
+}
+.vin-modal{
+  background: rgba(0, 0, 0, 0.9);
+  position: relative;
+  margin: 0 auto;
+  width: 30rem;
+  min-height: 200px;
+  padding: 30px;
+  border: 3px solid white;
+}
+.vin-modal-header{
+  display:flex;
+  justify-content: space-between;
+  padding-bottom: 10px;
+  border-bottom: 3px dotted white;
+}
+.vin-modal-title, .vin-modal-close{
+  font-size: 30px;
+  color: rgba(255, 255, 255, 0.8);
+}
+.vin-modal-close{
+  cursor: pointer;
+}
+.vin-modal-body{
+  color: white;
+  font-size: 18px;
+  padding-top: 20px;
+}
+
 @media (max-width: 768px)
 {
   .nav-menu{

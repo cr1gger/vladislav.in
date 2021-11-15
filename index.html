@@ -3,9 +3,9 @@
 <head>
     <meta charset="UTF-8">
     <title>VLADISLAV</title>
-    <script src="js/jquery-1.10.2.js"></script>
-    <link rel="stylesheet" href="css/style.css">
-    <link rel="stylesheet" href="css/animate.css">
+    <script src="/js/jquery-1.10.2.js"></script>
+    <link rel="stylesheet" href="/css/style.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
     <link rel="shortcut icon" href="favicon.png" type="image/png"/>
     <meta name="viewport" content="width=device-width, initial-scale=1">
 </head>
@@ -18,23 +18,59 @@
 
 <div class="box nav-menu">
     <div class="button inline-block">
-        <a class="animated-button thar-one" href="#">ОБО МНЕ</a>
+        <a class="animated-button thar-one" href="#" data-vin-modal="modal-about">ОБО МНЕ</a>
     </div>
     <div class="button inline-block">
         <a class="animated-button thar-one" href="#">ПОРФТОЛИО</a>
     </div>
+    <div class="button inline-block" data-vin-modal="modal-contact">
+        <a class="animated-button thar-one" href="#">КОНТАКТЫ</a>
+    </div>
     <div class="button inline-block">
         <a class="animated-button thar-one" href="#">ФАЙЛЫ</a>
     </div>
-    <div class="button inline-block">
-        <a class="animated-button thar-one" href="#">КОНТАКТЫ</a>
-    </div>
+</div>
+<div class="box footer-social">
+    <a class="inline-block" href="https://vk.com/cr1gger" target="_blank">
+        <img src="/svg/vk.svg" alt="Ссылка на ВК" width="35">
+    </a>
+    <a class="inline-block" href="https://t.me/cr1gger" target="_blank">
+        <img src="/svg/telegram.svg" alt="Ссылка на телеграм" width="35">
+    </a>
+    <a class="inline-block" href="mailto:cr1gger@ya.ru">
+        <img src="/svg/maildotru.svg" alt="Почта" width="35">
+    </a>
 </div>
 
 <div id="container" class="container">
     <canvas width="1920" height="484"></canvas>
 </div>
-<script src="js/index.js"></script>
-</body>
 
+<div class="vin-modal-container" id="modal-contact">
+    <div class="vin-modal">
+        <div class="vin-modal-header">
+            <div class="vin-modal-title">Контакты</div>
+            <div class="vin-modal-close">&times;</div>
+        </div>
+        <div class="vin-modal-body">
+            Все контакты указаны в низу страницы =)
+        </div>
+    </div>
+</div>
+<div class="vin-modal-container" id="modal-about">
+    <div class="vin-modal">
+        <div class="vin-modal-header">
+            <div class="vin-modal-title">Обо мне</div>
+            <div class="vin-modal-close">&times;</div>
+        </div>
+        <div class="vin-modal-body">
+            Скоро здесь что-то появиться...
+        </div>
+    </div>
+</div>
+
+
+<script src="/js/index.js"></script>
+<script src="/js/modal-handler.js"></script>
+</body>
 </html>
