@@ -1,17 +1,9 @@
-<html lang="en">
+<?php
 
-<head>
-    <meta charset="UTF-8">
-    <title>VLADISLAV</title>
-    <script src="/js/jquery-1.10.2.js"></script>
-    <link rel="stylesheet" href="/css/style.css">
-    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/animate.css/4.1.1/animate.min.css">
-    <link rel="shortcut icon" href="favicon.png" type="image/png"/>
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-</head>
+/** @var yii\web\View $this */
 
-<body>
-
+$this->title = 'My Yii Application';
+?>
 <div class="box brand">
     <h1>VLADISLAV.IN</h1>
 </div>
@@ -32,13 +24,13 @@
 </div>
 <div class="box footer-social">
     <a class="inline-block" href="https://vk.com/cr1gger" target="_blank">
-        <img src="/svg/vk.svg" alt="Ссылка на ВК" width="35">
+        <img src="/frontend/svg/vk.svg" alt="Ссылка на ВК" width="35">
     </a>
     <a class="inline-block" href="https://t.me/cr1gger" target="_blank">
-        <img src="/svg/telegram.svg" alt="Ссылка на телеграм" width="35">
+        <img src="/frontend/svg/telegram.svg" alt="Ссылка на телеграм" width="35">
     </a>
     <a class="inline-block" href="mailto:cr1gger@ya.ru">
-        <img src="/svg/maildotru.svg" alt="Почта" width="35">
+        <img src="/frontend/svg/maildotru.svg" alt="Почта" width="35">
     </a>
 </div>
 
@@ -68,9 +60,3 @@
         </div>
     </div>
 </div>
-
-
-<script src="/js/index.js"></script>
-<script src="/js/modal-handler.js"></script>
-</body>
-</html>
