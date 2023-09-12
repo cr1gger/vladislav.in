@@ -1,17 +1,22 @@
 <?php
 
+use app\modules\control\Module as ControlModule;
+
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
-    'bootstrap' => ['log'],
+    'bootstrap' => ['log', 'control'],
     'controllerNamespace' => 'app\commands',
     'aliases' => [
         '@bower' => '@vendor/bower-asset',
         '@npm'   => '@vendor/npm-asset',
         '@tests' => '@app/tests',
+    ],
+    'modules' => [
+        'control' => ControlModule::class
     ],
     'components' => [
         'cache' => [
