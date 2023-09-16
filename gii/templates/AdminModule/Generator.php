@@ -23,10 +23,7 @@ use yii\helpers\StringHelper;
  */
 class Generator extends \yii\gii\Generator
 {
-    /**
-     * @var string
-     */
-    public $moduleClass;
+
     /**
      * @var string
      */
@@ -60,11 +57,9 @@ class Generator extends \yii\gii\Generator
     public function rules()
     {
         return array_merge(parent::rules(), [
-            [['moduleID', 'moduleClass', 'moduleName'], 'trim'],
-            [['moduleID', 'moduleClass'], 'required'],
+            [['moduleID', 'moduleName'], 'trim'],
+            [['moduleID', 'moduleName'], 'required'],
             [['moduleID'], 'match', 'pattern' => '/^[\w\\-]+$/', 'message' => 'Only word characters, slashes and dashes are allowed.'],
-            [['moduleClass'], 'match', 'pattern' => '/^[\w\\\\]+$/', 'message' => 'Only word characters and backslashes are allowed.'],
-            [['moduleClass'], 'validateModuleClass'],
         ]);
     }
 
@@ -77,7 +72,6 @@ class Generator extends \yii\gii\Generator
             parent::attributeLabels(),
             [
                 'moduleID' => 'ID модуля',
-                'moduleClass' => 'Класс модуля',
                 'moduleName' => 'Название модуля',
             ]
         );
@@ -92,7 +86,6 @@ class Generator extends \yii\gii\Generator
             parent::hints(),
             [
                 'moduleID' => 'Идентификатор модуля, например, <code>admin</code>.',
-                'moduleClass' => 'Это полное имя класса модуля, например, <code>app\modules\admin\Module</code>.',
                 'moduleName' => 'Текстовое название модуля, выводится в меню, например: <code>Панель администратора</code>.',
             ]
         );
@@ -110,16 +103,14 @@ class Generator extends \yii\gii\Generator
         }
 
         $output = <<<EOD
-<p>The module has been generated successfully.</p>
-<p>To access the module, you need to add this to your application configuration:</p>
+<p>Модуль успешно создан!</p>
+<p>Для включения модуля, добавьте его в список активных модулей <code>app\modules\control\config\modules.php</code>:</p>
 EOD;
         $code = <<<EOD
 <?php
     ......
-    'modules' => [
-        '{$this->moduleID}' => [
-            'class' => '{$this->moduleClass}',
-        ],
+    '{$this->moduleID}' => [
+        'class' => {$this->getModuleClass()}::class,
     ],
     ......
 EOD;
@@ -132,7 +123,7 @@ EOD;
      */
     public function requiredTemplates()
     {
-        return ['module.php', 'controller.php', 'view.php'];
+        return ['module.php', 'controller.php', 'view.php', 'command-controller.php'];
     }
 
     /**
@@ -142,8 +133,9 @@ EOD;
     {
         $files = [];
         $modulePath = $this->getModulePath();
+
         $files[] = new CodeFile(
-            $modulePath . '/' . StringHelper::basename($this->moduleClass) . '.php',
+            $modulePath . '/' . 'Module.php',
             $this->render("module.php")
         );
         $files[] = new CodeFile(
@@ -154,36 +146,43 @@ EOD;
             $modulePath . '/views/default/index.php',
             $this->render("view.php")
         );
+        $files[] = new CodeFile(
+            $modulePath . '/commands/DefaultController.php',
+            $this->render("command-controller.php")
+        );
 
         return $files;
     }
 
-    /**
-     * Validates [[moduleClass]] to make sure it is a fully qualified class name.
-     */
-    public function validateModuleClass()
-    {
-        if (empty($this->moduleClass) || substr_compare($this->moduleClass, '\\', -1, 1) === 0) {
-            $this->addError('moduleClass', 'Module class name must not be empty. Please enter a fully qualified class name. e.g. "app\modules\admin\Module".');
-        }
-        if (strpos($this->moduleClass, '\\') === false || Yii::getAlias('@' . str_replace('\\', '/', $this->moduleClass), false) === false) {
-            $this->addError('moduleClass', 'Module class must be properly namespaced.');
-        }
-    }
 
     /**
      * @return string the directory that contains the module class
      */
     public function getModulePath()
     {
-        return Yii::getAlias('@' . str_replace('\\', '/', substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\'))));
+        return Yii::getAlias('@app/modules/control/modules/' . $this->moduleID);
+    }
+
+    public function getModuleNamespace() {
+        return 'app\modules\control\modules\\' . $this->moduleID;
     }
 
     /**
-     * @return string the controller namespace of the module.
+     * @return string the commands namespace of the module.
      */
+    public function getCommandsNamespace()
+    {
+        return $this->moduleNamespace . '\commands';
+    }
+
     public function getControllerNamespace()
     {
-        return substr($this->moduleClass, 0, strrpos($this->moduleClass, '\\')) . '\controllers';
+        return $this->moduleNamespace . '\controllers';
+    }
+
+    public function getModuleClass()
+    {
+        return '\\'.$this->getModuleNamespace() . '\Module';
+
     }
 }

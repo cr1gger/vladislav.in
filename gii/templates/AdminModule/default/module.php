@@ -13,12 +13,14 @@ echo "<?php\n";
 
 namespace <?= $ns ?>;
 
-use app\common\interfaces\ModuleInterface;
+use app\modules\control\interfaces\ModuleInterface;
+use yii\base\BootstrapInterface;
+use Yii;
 
 /**
  * <?= $generator->moduleID ?> module definition class
  */
-class <?= $className ?> extends \yii\base\Module implements ModuleInterface
+class <?= $className ?> extends \yii\base\Module implements BootstrapInterface, ModuleInterface
 {
     /**
      * {@inheritdoc}
@@ -35,11 +37,39 @@ class <?= $className ?> extends \yii\base\Module implements ModuleInterface
         // здесь находится пользовательский код инициализации
     }
 
+    public function bootstrap($app)
+    {
+        if ($app instanceof \yii\console\Application) {
+            $this->controllerNamespace = 'app\modules\control\modules\<?= $generator->moduleID ?>\commands';
+        }
+    }
+
     /**
      * {@inheritdoc}
      */
-    public function getName(): string
+    public static function getName(): string
     {
         return '<?= $generator->moduleName ?>';
+    }
+
+    /**
+    * @return array
+    */
+    public static function getMenuSettings(): array
+    {
+        $route = Yii::$app->controller->route;
+
+        return [
+            'label' => self::getName(),
+            'icon' => 'th',
+            'url' => ['/control/<?= $generator->moduleID ?>'],
+            'active' => $route === 'control/<?= $generator->moduleID ?>/default/index',
+            'visible' => true,
+            'target' => '_self',
+            'iconStyle' => 'fas',
+            'iconClassAdded' => '',
+            //'iconClass' => 'nav-icon fas fa-th',
+            //'badge' => '<span class="right badge badge-danger">New</span>',
+        ];
     }
 }
