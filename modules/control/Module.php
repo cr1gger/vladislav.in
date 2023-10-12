@@ -4,6 +4,7 @@ namespace app\modules\control;
 
 use Yii;
 use yii\base\BootstrapInterface;
+use yii\filters\AccessControl;
 
 /**
  * control module definition class
@@ -17,6 +18,29 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public $controllerNamespace = 'app\modules\control\controllers';
     public $layout = 'main';
 
+    public function behaviors()
+    {
+        if ($this->isWebApp()) {
+            return [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'actions' => ['login'],
+                            'allow' => true,
+                            'roles' => ['?'],
+                        ],
+                    ],
+                ],
+            ];
+        }
+        return parent::behaviors();
+    }
+
     /**
      * {@inheritdoc}
      */
@@ -29,7 +53,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
     public function bootstrap($app)
     {
-        if ($app instanceof \yii\console\Application) {
+        if ($this->isConsoleApp($app)) {
             $this->controllerNamespace = 'app\modules\control\commands';
         }
     }
@@ -58,5 +82,23 @@ class Module extends \yii\base\Module implements BootstrapInterface
             //'iconClass' => 'nav-icon fas fa-th',
             //'badge' => '<span class="right badge badge-danger">New</span>',
         ];
+    }
+
+    public function isConsoleApp($app = null): bool
+    {
+        if (!$app) {
+            $app = Yii::$app;
+        }
+
+        return ($app instanceof \yii\console\Application);
+    }
+
+    public function isWebApp($app = null): bool
+    {
+        if (!$app) {
+            $app = Yii::$app;
+        }
+
+        return ($app instanceof \yii\web\Application);
     }
 }

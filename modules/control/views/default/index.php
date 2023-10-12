@@ -1,6 +1,11 @@
 <?php
 $this->title = 'Панель управления';
 $this->params['breadcrumbs'] = [['label' => $this->title]];
+// https://devanswers.ru/server-ru/php-poluchenie-informatsii-o-servere/
+// PHP Получение информации о сервере
+// Вывести все БД
+// User.Count
+
 ?>
 <div class="container-fluid">
     <div class="row">

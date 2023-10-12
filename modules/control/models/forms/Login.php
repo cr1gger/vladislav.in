@@ -3,6 +3,7 @@
 namespace app\modules\control\models\forms;
 
 use app\common\models\User;
+use Yii;
 
 class Login extends \yii\base\Model
 {
@@ -34,6 +35,17 @@ class Login extends \yii\base\Model
         if (!$user || !$user->validatePassword($this->password)) {
             $this->addError($attribute, 'Неправильный логин или пароль');
         }
+    }
+
+    public function authorize(): bool
+    {
+        if ($this->validate()) {
+            $user = User::findByUsername($this->username);
+            return Yii::$app->user->login($user, $this->rememberMe ? 3600 * 24 * 30 : 0);
+        }
+
+        return false;
+
     }
 
     /**

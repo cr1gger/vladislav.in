@@ -1,7 +1,7 @@
 <?php
 
 use app\modules\control\widgets\SidebarControl\SidebarControlWidget;
-
+$user = Yii::$app->user->getIdentity()
 ?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
     <!-- Brand Logo -->
@@ -18,7 +18,7 @@ use app\modules\control\widgets\SidebarControl\SidebarControlWidget;
                 <img src="<?=$assetDir?>/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">Alexander Pierce</a>
+                <a href="#" class="d-block"><?=$user->username?></a>
             </div>
         </div>
 

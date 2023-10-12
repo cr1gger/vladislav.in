@@ -4,17 +4,13 @@ use app\modules\control\Module as ControlModule;
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+$common = require __DIR__ . '/../common/config/common.php';
 
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log', 'control'],
     'controllerNamespace' => 'app\commands',
-    'aliases' => [
-        '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
-        '@tests' => '@app/tests',
-    ],
     'modules' => [
         'control' => ControlModule::class
     ],
@@ -33,13 +29,20 @@ $config = [
         'db' => $db,
     ],
     'params' => $params,
-    /*
+
     'controllerMap' => [
-        'fixture' => [ // Fixture generation command line.
-            'class' => 'yii\faker\FixtureController',
+        'migrate-control' => [
+            'class' => 'yii\console\controllers\MigrateController',
+            'migrationNamespaces' => ['app\modules\control\migrations'],
+            'migrationTable' => 'migration_control',
+            'migrationPath' => null,
         ],
+
+//        'fixture' => [ // Fixture generation command line.
+//            'class' => 'yii\faker\FixtureController',
+//        ],
     ],
-    */
+
 ];
 
 if (YII_ENV_DEV) {
@@ -58,4 +61,4 @@ if (YII_ENV_DEV) {
     ];
 }
 
-return $config;
+return array_merge($common, $config);

@@ -2,22 +2,31 @@
 
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
+$common = require __DIR__ . '/../common/config/common.php';
 
 $config = [
     'id' => 'basic',
     'basePath' => dirname(__DIR__),
     'bootstrap' => ['log'],
     'language' => 'ru-RU',
-    'aliases' => [
-        '@bower' => '@vendor/bower-asset',
-        '@npm'   => '@vendor/npm-asset',
-    ],
     'modules' => [
         'control' => [
             'class' => \app\modules\control\Module::class,
         ],
     ],
+    'homeUrl' => '/control',
     'components' => [
+        'assetManager' => [
+            'class' => 'yii\web\AssetManager',
+            'appendTimestamp' => true,
+            'bundles' => [
+                'yii\web\JqueryAsset' => [
+                    'jsOptions' => [
+                        'position' => \yii\web\View::POS_HEAD
+                    ],
+                ],
+            ]
+        ],
         'request' => [
             // !!! insert a secret key in the following (if it is empty) - this is required by cookie validation
             'cookieValidationKey' => 'DwzLuN-qg7TpTln5xh0gyAm6ReMSzwi7',
@@ -26,12 +35,12 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
-            'identityClass' => 'app\common\User',
+            'identityClass' => \app\common\models\User::class,
             'enableAutoLogin' => true,
             'loginUrl' => ['control/auth/login'],
         ],
         'errorHandler' => [
-            'errorAction' => 'site/error',
+            'errorAction' => '/control/default/error',
         ],
         'mailer' => [
             'class' => \yii\symfonymailer\Mailer::class,
@@ -83,4 +92,4 @@ if (YII_ENV_DEV) {
     ];
 }
 
-return $config;
+return array_merge($common, $config);

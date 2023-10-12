@@ -10,25 +10,34 @@ use Yii;
 
 class SidebarControlWidget extends Menu
 {
+    private ?ControlModule $controlModule = null;
     /**
      * @return string|void
      */
     public function run()
     {
-        /* @var ControlModule $controlModule */
-        $controlModule = Yii::$app->getModule(ControlModule::MODULE_NAME);
-        $items = [
-            $controlModule::getMenuSettings()
-        ];
+        $this->controlModule = Yii::$app->getModule(ControlModule::MODULE_NAME);
+        $items = [];
 
-        foreach ($controlModule->modules as $key => $module) {
+        // Главноая кнопка
+        $items[] = $this->controlModule::getMenuSettings();
+
+        // Модули
+        $items[] = ['label' => 'Модули', 'header' => true];
+        foreach ($this->controlModule->modules as $key => $module) {
             $menuModule = $this->getAdminModule($module);
             if ($menuModule) {
                 $items[] = $menuModule::getMenuSettings();
             }
         }
-        $this->items = $items;
 
+        // Инструменты и прочие пункты меню
+        $items = array_merge(
+            $items,
+            $this->toolsItems()
+        );
+
+        $this->items = $items;
         return parent::run();
     }
 
@@ -49,5 +58,17 @@ class SidebarControlWidget extends Menu
         }
 
         return false;
+    }
+
+    /**
+     * @return array
+     */
+    public function toolsItems(): array
+    {
+        $items = [];
+        $items[] = ['label' => 'Инструменты', 'header' => true];
+        $items[] = ['label' => 'Gii',  'icon' => 'file-code', 'url' => ['/gii'], 'target' => '_blank'];
+
+        return $items;
     }
 }
