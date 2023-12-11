@@ -4,10 +4,10 @@
 
 </p>
 
-#Установка 
+# Установка 
 1. `cp config/db.example.php config/db.php`
 1. `composer install`
 2. `php yii migrate && php yii migrate-control`
 
-#Создание пользователя
+# Создание пользователя
 `php yii control/user/create admin admin12345`
