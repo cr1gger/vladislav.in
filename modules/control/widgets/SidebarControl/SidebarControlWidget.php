@@ -26,7 +26,7 @@ class SidebarControlWidget extends Menu
         $items[] = ['label' => 'Модули', 'header' => true];
         foreach ($this->controlModule->modules as $key => $module) {
             $menuModule = $this->getAdminModule($module);
-            if ($menuModule) {
+            if ($menuModule && $menuModule::canAccess()) {
                 $items[] = $menuModule::getMenuSettings();
             }
         }

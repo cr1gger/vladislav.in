@@ -61,4 +61,4 @@ if (YII_ENV_DEV) {
     ];
 }
 
-return array_merge($common, $config);
+return array_merge_recursive($common, $config);

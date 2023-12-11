@@ -32,6 +32,9 @@ class <?= $className ?> extends \yii\base\Module implements BootstrapInterface, 
      */
     public function init()
     {
+        if (!self::canAccess()) {
+            throw new \yii\web\ForbiddenHttpException('Доступ запрещен');
+        }
         parent::init();
 
         // здесь находится пользовательский код инициализации
@@ -71,5 +74,13 @@ class <?= $className ?> extends \yii\base\Module implements BootstrapInterface, 
             //'iconClass' => 'nav-icon fas fa-th',
             //'badge' => '<span class="right badge badge-danger">New</span>',
         ];
+    }
+
+    /**
+    * @return bool
+    */
+    public static function canAccess(): bool
+    {
+        return Yii::$app->user->can('control.<?= $generator->moduleID ?>.access');
     }
 }

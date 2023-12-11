@@ -18,6 +18,7 @@ use yii\web\IdentityInterface;
  * @property string $created_at
  * @property string $updated_at
  * @property string $last_login
+ * @method TimestampBehavior touch($attribute)
  */
 class User extends ActiveRecord implements IdentityInterface
 {
@@ -51,6 +52,21 @@ class User extends ActiveRecord implements IdentityInterface
             [['status'], 'integer'],
             [['access_token', 'auth_key'], 'string'],
             [['created_at', 'updated_at', 'last_login'], 'safe']
+        ];
+    }
+
+    public function attributeLabels()
+    {
+        return [
+            'id' => 'ID',
+            'username' => 'Логин',
+            'password' => 'Пароль',
+            'status' => 'Статус',
+            'access_token' => 'Access Token',
+            'auth_key' => 'Auth Key',
+            'created_at' => 'Дата создания',
+            'updated_at' => 'Дата обновления',
+            'last_login' => 'Дата последнего входа',
         ];
     }
 

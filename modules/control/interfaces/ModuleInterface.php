@@ -15,4 +15,9 @@ interface ModuleInterface
      */
     public static function getMenuSettings(): array;
 
+    /**
+     * @return bool
+     */
+    public static function canAccess(): bool;
+
 }

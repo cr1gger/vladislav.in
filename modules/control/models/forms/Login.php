@@ -41,7 +41,13 @@ class Login extends \yii\base\Model
     {
         if ($this->validate()) {
             $user = User::findByUsername($this->username);
-            return Yii::$app->user->login($user, $this->rememberMe ? 3600 * 24 * 30 : 0);
+            $isAuthorize = Yii::$app->user->login($user, $this->rememberMe ? 3600 * 24 * 30 : 0);
+
+            if ($isAuthorize) {
+                $user->touch('last_login');
+            }
+
+            return $isAuthorize;
         }
 
         return false;
