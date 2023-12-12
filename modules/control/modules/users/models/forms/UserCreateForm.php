@@ -77,7 +77,7 @@ class UserCreateForm extends Model
             $user->setPassword($this->password);
 
             if ($user->save()) {
-                $roleAssigned = RbacService::assignRole($user->id, $this->role);
+                $roleAssigned = RbacService::assignRolesList($user->id, $this->roles);
                 $permissionsAssigned = RbacService::assignPermissionList($user->id, $this->permissions);
 
                 if (!$roleAssigned || !$permissionsAssigned) {

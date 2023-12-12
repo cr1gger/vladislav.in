@@ -41,6 +41,10 @@ class Login extends \yii\base\Model
     {
         if ($this->validate()) {
             $user = User::findByUsername($this->username);
+            if ($user->status != User::STATUS_ACTIVE) {
+                $this->addError('username', 'Доступ заблокирован');
+                return false;
+            }
             $isAuthorize = Yii::$app->user->login($user, $this->rememberMe ? 3600 * 24 * 30 : 0);
 
             if ($isAuthorize) {
