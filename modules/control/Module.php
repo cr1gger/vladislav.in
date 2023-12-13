@@ -48,6 +48,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
     {
         parent::init();
         $this->modules = require(__DIR__ . '/config/modules.php');
+        $this->params['publicWeb'] = Yii::$app->assetManager->getPublishedUrl('@control/web');
     }
 
 

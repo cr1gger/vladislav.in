@@ -1,6 +1,8 @@
 <?php
 
 use app\modules\control\widgets\SidebarControl\SidebarControlWidget;
+use yii\helpers\Url;
+
 $user = Yii::$app->user->getIdentity()
 ?>
 <aside class="main-sidebar sidebar-dark-primary elevation-4">
@@ -18,7 +20,7 @@ $user = Yii::$app->user->getIdentity()
                 <img src="<?=$assetDir?>/img/user2-160x160.jpg" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block"><?=$user->username?></a>
+                <a href="<?=Url::to(['/control/account'])?>" class="d-block"><?=$user->username?></a>
             </div>
         </div>
 
