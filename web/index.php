@@ -4,8 +4,13 @@
 defined('YII_DEBUG') or define('YII_DEBUG', true);
 defined('YII_ENV') or define('YII_ENV', 'dev');
 
+use Symfony\Component\Dotenv\Dotenv;
+
 require __DIR__ . '/../vendor/autoload.php';
 require __DIR__ . '/../vendor/yiisoft/yii2/Yii.php';
+
+$dotenv = new Dotenv();
+$dotenv->load(__DIR__.'/../.env');
 
 $config = require __DIR__ . '/../config/web.php';
 

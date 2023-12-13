@@ -19,7 +19,8 @@
         "yiisoft/yii2-bootstrap5": "~2.0.2",
         "yiisoft/yii2-symfonymailer": "~2.0.3",
         "hail812/yii2-adminlte3": "~1.1",
-        "kartik-v/yii2-widget-select2": "2.2.5"
+        "kartik-v/yii2-widget-select2": "2.2.5",
+        "symfony/dotenv": "^5.4"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",
@@ -47,8 +48,8 @@
         "build-project": [
 
             "composer install",
-            "php yii migrate && php yii migrate-control", // Миграции
-            "php yii control/user/create-root" // Создание рут пользователя
+            "php yii migrate && php yii migrate-control",
+            "php yii control/user/create-root"
         ],
         "post-install-cmd": [
             "yii\\composer\\Installer::postInstall"
