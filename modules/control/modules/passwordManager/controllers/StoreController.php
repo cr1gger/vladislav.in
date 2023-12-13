@@ -124,7 +124,7 @@ class StoreController extends Controller
      */
     public function actionFolder($id)
     {
-        $category = PmCategory::findOne($id);
+        $category = PmCategory::findOne(['id' => $id, 'owner' => Yii::$app->user->getId()]);
 
         if (!$category) {
             throw new NotFoundHttpException('The requested page does not exist.');
@@ -166,7 +166,7 @@ class StoreController extends Controller
      */
     protected function findModel($id)
     {
-        if (($model = PmStore::findOne(['id' => $id])) !== null) {
+        if (($model = PmStore::findOne(['id' => $id, 'owner' => Yii::$app->user->getId()])) !== null) {
             return $model;
         }
 
