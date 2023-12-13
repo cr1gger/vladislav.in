@@ -4,6 +4,7 @@
 /* @var $content string */
 
 use app\modules\control\assets\AssetsCommon;
+use app\modules\control\components\Toast;
 use yii\helpers\Html;
 
 \hail812\adminlte3\assets\FontAwesomeAsset::register($this);
@@ -55,5 +56,6 @@ AssetsCommon::register($this);
 
 <?php $this->endBody() ?>
 </body>
+<?php new Toast();?>
 </html>
 <?php $this->endPage() ?>
