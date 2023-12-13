@@ -1,6 +1,7 @@
 <?php
 
 return [
+    // TODO: Брать из .env
     'class' => 'yii\db\Connection',
     'dsn' => 'mysql:host=localhost;dbname=vladislav_in',
     'username' => 'root',

@@ -5,9 +5,12 @@
 </p>
 
 # Установка 
-1. `cp config/db.example.php config/db.php`
-1. `composer install`
-2. `php yii migrate && php yii migrate-control`
+1. `cp .env.example .env`
+2. `cp config/db.example.php config/db.php`
+3. `composer build-project`
+
+# Создание супер-пользователя
+`php yii control/user/create-root`
 
 # Создание пользователя
 `php yii control/user/create admin admin12345`

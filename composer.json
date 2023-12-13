@@ -44,6 +44,12 @@
         }
     },
     "scripts": {
+        "build-project": [
+
+            "composer install",
+            "php yii migrate && php yii migrate-control", // Миграции
+            "php yii control/user/create-root" // Создание рут пользователя
+        ],
         "post-install-cmd": [
             "yii\\composer\\Installer::postInstall"
         ],

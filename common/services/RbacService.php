@@ -8,6 +8,7 @@ use yii\helpers\ArrayHelper;
 class RbacService extends \yii\base\BaseObject
 {
     /**
+     * Назначает пользователю роль
      * @param int $userId
      * @param string $role
      * @return \yii\rbac\Assignment|null
@@ -27,6 +28,7 @@ class RbacService extends \yii\base\BaseObject
     }
 
     /**
+     * Назначает пользователю разрешение
      * @param int $userId
      * @param string $permission
      * @return \yii\rbac\Assignment|null
@@ -46,13 +48,19 @@ class RbacService extends \yii\base\BaseObject
     }
 
     /**
+     * Назначает пользователю указанные разрешения
      * @param int $userId
-     * @param array $permissionList
+     * @param array|null $permissionList
      * @return bool
      * @throws \Exception
      */
-    public static function assignPermissionList(int $userId, array $permissionList): bool
+    public static function assignPermissionList(int $userId, ?array $permissionList): bool
     {
+        if (empty($permissionList)) {
+            self::removeAllPermission($userId);
+            return true;
+        }
+
         $result = [];
         foreach ($permissionList as $permission) {
             $result[] = self::assignPermission($userId, $permission);
@@ -62,6 +70,7 @@ class RbacService extends \yii\base\BaseObject
     }
 
     /**
+     * Назначает пользователю указанные роли
      * @param int $userId
      * @param array $rolesList
      * @return bool
@@ -69,6 +78,11 @@ class RbacService extends \yii\base\BaseObject
      */
     public static function assignRolesList(int $userId, array $rolesList): bool
     {
+        if (empty($rolesList)) {
+            self::removeAllRoles($userId);
+            return true;
+        }
+
         $result = [];
         foreach ($rolesList as $role) {
             $result[] = self::assignRole($userId, $role);
@@ -78,6 +92,7 @@ class RbacService extends \yii\base\BaseObject
     }
 
     /**
+     * Возвращает список ролей пользователя в формате [idx => name]
      * @param $userId
      * @return array
      */
@@ -91,6 +106,7 @@ class RbacService extends \yii\base\BaseObject
     }
 
     /**
+     * Возвращает список разрешений пользователя в формате [idx => name]
      * @param $userId
      * @return array
      */
@@ -105,6 +121,7 @@ class RbacService extends \yii\base\BaseObject
 
 
     /**
+     * Удаляет все роли и разрешения пользователя
      * @param $userId
      * @return bool
      */
@@ -112,5 +129,37 @@ class RbacService extends \yii\base\BaseObject
     {
         $manager = \Yii::$app->getAuthManager();
         return $manager->revokeAll($userId);
+    }
+
+    /**
+     * Удаляет все разрешения у пользователя
+     * @param int $userId
+     * @return void
+     */
+    public static function removeAllPermission(int $userId)
+    {
+        $manager = \Yii::$app->getAuthManager();
+
+        $permissions = $manager->getPermissionsByUser($userId);
+
+        foreach ($permissions as $permission) {
+            $manager->revoke($permission, $userId);
+        }
+    }
+
+    /**
+     * Удаляет все разрешения у пользователя
+     * @param int $userId
+     * @return void
+     */
+    public static function removeAllRoles(int $userId)
+    {
+        $manager = \Yii::$app->getAuthManager();
+
+        $roles = $manager->getRolesByUser($userId);
+
+        foreach ($roles as $role) {
+            $manager->revoke($role, $userId);
+        }
     }
 }
