@@ -11,6 +11,7 @@ class UserCreateForm extends Model
 {
     public $username;
     public $password;
+    public $status;
     public $roles;
     public $permissions;
 
@@ -20,7 +21,7 @@ class UserCreateForm extends Model
     public function rules()
     {
         return [
-            [['username', 'password', 'roles'], 'required'],
+            [['username', 'password', 'roles', 'status'], 'required'],
             ['username', 'unique', 'targetClass' => User::class, 'targetAttribute' => 'username'],
             [['roles', 'permissions'], 'safe'],
         ];
@@ -34,6 +35,7 @@ class UserCreateForm extends Model
         return [
             'username' => 'Логин',
             'password' => 'Пароль',
+            'status' => 'Статус',
             'roles' => 'Роль',
             'permissions' => 'Разрешения',
         ];
@@ -42,7 +44,7 @@ class UserCreateForm extends Model
     /**
      * @return array|string[]
      */
-    public static function getRolesList()
+    public function getRolesList()
     {
         $permissions = \Yii::$app->getAuthManager()->getRoles();
 
@@ -51,11 +53,22 @@ class UserCreateForm extends Model
     /**
      * @return array|string[]
      */
-    public static function getPermissionsList()
+    public function getPermissionsList()
     {
         $permissions = \Yii::$app->getAuthManager()->getPermissions();
 
         return ArrayHelper::map($permissions,'name', 'description');
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getStatuses(): array
+    {
+        return [
+            User::STATUS_ACTIVE => 'Активен',
+            User::STATUS_INACTIVE => 'Заблокирован',
+        ];
     }
 
     /**

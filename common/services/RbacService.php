@@ -4,6 +4,7 @@ namespace app\common\services;
 
 use app\common\models\User;
 use yii\helpers\ArrayHelper;
+use yii\rbac\Role;
 
 class RbacService extends \yii\base\BaseObject
 {
@@ -92,17 +93,39 @@ class RbacService extends \yii\base\BaseObject
     }
 
     /**
+     * Возвращает массив ролей пользователя
+     * @param $userId
+     * @return Role[]
+     */
+    public static function getUserRoles($userId): array
+    {
+        $manager = \Yii::$app->getAuthManager();
+
+        return $manager->getRolesByUser($userId);
+    }
+
+    /**
+     * Возвращает массив разрешений пользователя
+     * @param $userId
+     * @return Role[]
+     */
+    public static function getUserPermissions($userId): array
+    {
+        $manager = \Yii::$app->getAuthManager();
+
+        return $manager->getPermissionsByUser($userId);
+    }
+
+    /**
      * Возвращает список ролей пользователя в формате [idx => name]
      * @param $userId
      * @return array
      */
-    public static function getUserRolesList($userId)
+    public static function getUserRolesList($userId): array
     {
-        $manager = \Yii::$app->getAuthManager();
+        $roles = self::getUserRoles($userId);
 
-        $permissions = $manager->getRolesByUser($userId);
-
-        return ArrayHelper::getColumn($permissions, 'name');
+        return ArrayHelper::getColumn($roles, 'name');
     }
 
     /**
@@ -110,11 +133,9 @@ class RbacService extends \yii\base\BaseObject
      * @param $userId
      * @return array
      */
-    public static function getUserPermissionList($userId)
+    public static function getUserPermissionList($userId): array
     {
-        $manager = \Yii::$app->getAuthManager();
-
-        $permissions = $manager->getPermissionsByUser($userId);
+        $permissions = self::getUserPermissions($userId);
 
         return ArrayHelper::getColumn($permissions, 'name');
     }
@@ -125,7 +146,7 @@ class RbacService extends \yii\base\BaseObject
      * @param $userId
      * @return bool
      */
-    public static function removeAll($userId)
+    public static function removeAll($userId): bool
     {
         $manager = \Yii::$app->getAuthManager();
         return $manager->revokeAll($userId);

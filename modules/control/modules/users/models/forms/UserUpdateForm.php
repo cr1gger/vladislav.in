@@ -11,6 +11,7 @@ class UserUpdateForm extends Model
 {
     public $username;
     public $password;
+    public $status;
     public $roles;
     public $permissions;
     public $user;
@@ -21,7 +22,7 @@ class UserUpdateForm extends Model
     public function rules()
     {
         return [
-            [['username', 'roles'], 'required'],
+            [['username', 'roles', 'status'], 'required'],
             ['username', 'unique', 'targetClass' => User::class, 'targetAttribute' => 'username', 'when' => function ($model) {
                 return $model->user->username != $model->username;
             }],
@@ -37,6 +38,7 @@ class UserUpdateForm extends Model
         return [
             'username' => 'Логин',
             'password' => 'Пароль',
+            'status' => 'Статус',
             'roles' => 'Роль',
             'permissions' => 'Разрешения',
         ];
@@ -45,7 +47,7 @@ class UserUpdateForm extends Model
     /**
      * @return array|string[]
      */
-    public static function getRolesList()
+    public function getRolesList()
     {
         $permissions = \Yii::$app->getAuthManager()->getRoles();
 
@@ -55,11 +57,22 @@ class UserUpdateForm extends Model
     /**
      * @return array|string[]
      */
-    public static function getPermissionsList()
+    public function getPermissionsList()
     {
         $permissions = \Yii::$app->getAuthManager()->getPermissions();
 
         return ArrayHelper::map($permissions, 'name', 'description');
+    }
+
+    /**
+     * @return string[]
+     */
+    public function getStatuses(): array
+    {
+        return [
+            User::STATUS_ACTIVE => 'Активен',
+            User::STATUS_INACTIVE => 'Заблокирован',
+        ];
     }
 
     /**
@@ -114,15 +127,14 @@ class UserUpdateForm extends Model
 
     public static function create(User $user)
     {
-        $form = new self([
+        return new self([
             'username' => $user->username,
             'password' => '',
+            'status' => $user->status,
             'roles' => RbacService::getUserRolesList($user->id),
             'permissions' => RbacService::getUserPermissionList($user->id),
             'user' => $user,
         ]);
-
-        return $form;
     }
 
 

@@ -13,6 +13,7 @@ use yii\helpers\Html;
 
 <?= $form->field($model, 'username')->textInput() ?>
 <?= $form->field($model, 'password')->textInput() ?>
+<?= $form->field($model, 'status')->dropdownList($model->getStatuses()) ?>
 <?= $form->field($model, 'roles')->checkboxList($model->getRolesList(), [
     'value' => $model->roles
 ]) ?>
