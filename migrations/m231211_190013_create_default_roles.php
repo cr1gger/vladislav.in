@@ -13,6 +13,7 @@ class m231211_190013_create_default_roles extends Migration
     public function safeUp()
     {
         $roles = [
+            'root' => 'Супер-пользователь',
             'admin' => 'Администратор',
             'user'  => 'Пользователь',
         ];

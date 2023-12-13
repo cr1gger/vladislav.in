@@ -35,6 +35,7 @@ $config = [
             'class' => 'yii\caching\FileCache',
         ],
         'user' => [
+            'class' => app\models\WebUser::class,
             'identityClass' => \app\common\models\User::class,
             'enableAutoLogin' => true,
             'loginUrl' => ['control/auth/login'],
