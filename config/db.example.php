@@ -1,11 +1,10 @@
 <?php
 
 return [
-    // TODO: Брать из .env
     'class' => 'yii\db\Connection',
-    'dsn' => 'mysql:host=localhost;dbname=vladislav_in',
-    'username' => 'root',
-    'password' => 'root',
+    'dsn' => sprintf('mysql:host=%s;dbname=%s', $_ENV['MYSQL_HOST'], $_ENV['MYSQL_DB_NAME']),
+    'username' => $_ENV['MYSQL_USERNAME'],
+    'password' => $_ENV['MYSQL_PASSWORD'],
     'charset' => 'utf8mb4',
 
     // Schema cache options (for production environment)
