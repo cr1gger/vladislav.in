@@ -86,7 +86,7 @@ class UserUpdateForm extends Model
             if ($user->save()) {
                 RbacService::removeAll($user->id);
                 $rolesAssigned = RbacService::assignRolesList($user->id, $this->roles);
-                $permissionsAssigned = RbacService::assignPermissionList($user->id, $this->permissions);
+                $permissionsAssigned = RbacService::assignPermissionList($user->id, $this->permissions ?: []);
 
                 if (!$rolesAssigned || !$permissionsAssigned) {
                     $this->addError('username', 'Ошибка при назначении роли или разрешений');
