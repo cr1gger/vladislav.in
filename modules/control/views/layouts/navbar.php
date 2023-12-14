@@ -4,7 +4,7 @@ use yii\helpers\Html;
 
 ?>
 <!-- Navbar -->
-<nav class="main-header navbar navbar-expand navbar-white navbar-light bg-dark text-white">
+<nav class="main-header navbar navbar-expand navbar-white navbar-light text-white">
     <!-- Left navbar links -->
     <ul class="navbar-nav">
         <li class="nav-item">
