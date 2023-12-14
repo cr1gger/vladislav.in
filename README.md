@@ -6,8 +6,7 @@
 
 # Установка 
 1. `cp .env.example .env`
-2. `cp config/db.example.php config/db.php`
-3. `composer build-project`
+2. `composer build-project`
 
 # Создание супер-пользователя
 `php yii control/user/create-root`
