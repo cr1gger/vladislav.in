@@ -42,4 +42,47 @@ class UserService
             throw $e;
         }
     }
+
+    /**
+     * Изменение логина пользователя
+     * @param int $id
+     * @param string $username
+     * @return bool
+     */
+    public static function changeUsername(int $id, string $username): bool
+    {
+        $existUser = User::find()
+            ->where(['username' => $username])
+            ->exists();
+
+        if ($existUser) {
+            return false;
+        }
+
+        $user = User::findOne($id);
+        $user->username = $username;
+        $user->updateAttributes(['username']);
+
+        return true;
+    }
+
+    /**
+     * Изменение пароля пользователя
+     * @param int $id
+     * @param string $password
+     * @return bool
+     */
+    public static function changePassword(int $id, string $password): bool
+    {
+        $user = User::findOne($id);
+
+        if (!$user) {
+            return false;
+        }
+
+        $user->setPassword($password);
+        $user->updateAttributes(['password']);
+
+        return true;
+    }
 }

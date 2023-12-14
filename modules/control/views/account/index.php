@@ -1,4 +1,7 @@
 <?php
+
+use yii\helpers\Html;
+
 $publicWeb = Yii::$app->getModule('control')->params['publicWeb'];
 ?>
 
@@ -79,17 +82,19 @@ $publicWeb = Yii::$app->getModule('control')->params['publicWeb'];
                             <p>Если вы решили изменить ваши данные для входа, это можно сделать здесь!</p>
                             <p>Введите новые данные и нажмите кнопку "Изменить"</p>
                             <p>Можно изменить что-то одно или сразу все =)</p>
-                            <form class="form-horizontal">
+                            <?= Html::beginForm('/control/account/change', 'post', [
+                                    'class' => 'form-horizontal', // TODO: Переделать на ActiveForm
+                            ])?>
                                 <div class="form-group row">
-                                    <label for="inputName" class="col-sm-2 col-form-label">Логин</label>
+                                    <label for="username" class="col-sm-2 col-form-label">Логин</label>
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputName" placeholder="Введите новый логин">
+                                        <input type="text" class="form-control" id="username" name="username" placeholder="Введите новый логин">
                                     </div>
                                 </div>
                                 <div class="form-group row">
-                                    <label for="inputEmail" class="col-sm-2 col-form-label">Пароль</label>
+                                    <label for="new-password" class="col-sm-2 col-form-label">Пароль</label>
                                     <div class="col-sm-10">
-                                        <input type="email" class="form-control" id="inputEmail" placeholder="Введите новый пароль">
+                                        <input type="text" class="form-control" id="new-password" name="new-password" placeholder="Введите новый пароль">
                                     </div>
                                 </div>
                                 <div class="form-group row">
@@ -97,7 +102,7 @@ $publicWeb = Yii::$app->getModule('control')->params['publicWeb'];
                                         <button type="submit" class="btn btn-danger">Изменить</button>
                                     </div>
                                 </div>
-                            </form>
+                            <?=Html::endForm()?>
                         </div>
 
                     </div>
