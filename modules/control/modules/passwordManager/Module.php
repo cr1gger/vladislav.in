@@ -59,7 +59,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleInter
             'iconStyle' => 'fas',
             'iconClassAdded' => '',
             'items' => self::menuItems(),
-            //'iconClass' => 'nav-icon fas fa-th',
+            'iconClass' => 'nav-icon fas fa-key',
             //'badge' => '<span class="right badge badge-danger">New</span>',
         ];
     }
@@ -77,6 +77,8 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleInter
                 'icon' => 'file-code',
                 'url' => ['/control/passwordManager/store'],
                 'active' => $route === 'control/passwordManager/store/index',
+                'iconClass' => 'nav-icon fas fa-list',
+
             ]
         ];
     }

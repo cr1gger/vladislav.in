@@ -48,7 +48,8 @@ class UserCreateForm extends Model
     {
         $permissions = \Yii::$app->getAuthManager()->getRoles();
 
-        return ArrayHelper::map($permissions, 'name', 'description');    }
+        return ArrayHelper::map($permissions, 'name', 'description');
+    }
 
     /**
      * @return array|string[]
@@ -83,7 +84,6 @@ class UserCreateForm extends Model
         $transaction = \Yii::$app->db->beginTransaction();
 
         try {
-
             $user = new User();
             $user->username = $this->username;
             $user->status = User::STATUS_ACTIVE;

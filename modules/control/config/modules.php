@@ -7,4 +7,7 @@ return [
     'users' => [
         'class' => \app\modules\control\modules\users\Module::class,
     ],
+    'notes' => [
+        'class' => \app\modules\control\modules\notes\Module::class,
+    ],
 ];
