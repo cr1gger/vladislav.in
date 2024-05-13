@@ -19,7 +19,7 @@ $this->title = 'My Yii Application';
         <a class="animated-button thar-one" href="#">КОНТАКТЫ</a>
     </div>
     <div class="button inline-block">
-        <a class="animated-button thar-one" href="//files.vladislav.in" target="_blank">ФАЙЛЫ</a>
+        <a class="animated-button thar-one" href="/editor2" target="_blank">Онлайн редактор</a>
     </div>
 </div>
 <div class="box footer-social">

@@ -8,6 +8,10 @@ class EditorController extends Controller
 {
     public $layout = 'editor';
 
+    /**
+     * {@inheritdoc}
+     */
+
     public function actionIndex()
     {
         return $this->render('index');

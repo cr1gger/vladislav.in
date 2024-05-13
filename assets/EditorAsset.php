@@ -8,7 +8,7 @@ class EditorAsset extends AssetBundle
 {
     public $basePath = '@webroot';
 
-    public $baseUrl = '@web/editor';
+    public $baseUrl = '@web/editor_assets';
 
     public $css = [
         'lib/material-icons.css',

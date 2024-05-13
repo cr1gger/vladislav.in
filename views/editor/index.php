@@ -22,8 +22,8 @@
 </div>
 <div id="navbar">
     <div id="navcontent">
-        <a id="logo" href = "/editor" tooltip = "Check out the code on Github!">
-            <p id="title" class="left"># Markdown Editor</p>
+        <a id="logo" href = "/" tooltip = "Check out the code on Github!">
+            <p id="title" class="left"># VLADISLAV.IN</p>
         </a>
         <p id="openbutton" title="Open from Disk" class="navbutton left" onclick="document.getElementById('fileInput').click();"><i class="material-icons">open_in_browser</i></p>
         <input id="fileInput" type="file" class="hidden" accept=".md,.mdown,.txt,.markdown"/>
