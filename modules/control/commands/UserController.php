@@ -20,7 +20,7 @@ class UserController extends \yii\console\Controller
         // TODO: переделать!
         $user = User::findByUsername($username);
         if ($user) {
-            throw new Exception('Пользователь с таким именем уже существует');
+            return Console::output('Такой юзер уже есть!');
         }
         $user = new User();
         $user->username = $username;
@@ -52,16 +52,20 @@ class UserController extends \yii\console\Controller
             'permissions' => []
         ]);
 
-        if(UserService::create($dto)) {
-            Console::output('Root успешно создан');
-            Console::output('');
-            Console::output('Логин: root');
-            Console::output('Пароль: root');
+        try {
+            if (UserService::create($dto)) {
+                Console::output('Root успешно создан');
+                Console::output('');
+                Console::output('Логин: root');
+                Console::output('Пароль: root');
 
-            return true;
+                return true;
+            }
+        } catch (Exception $e) {
+            Console::output($e->getMessage());
         }
 
-        Console::output('Что-то пошло не так....');
+        Console::output('Root пользователь не был создан! Данные для входа по умолчанию: root:root');
 
 
     }

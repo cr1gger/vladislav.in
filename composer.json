@@ -46,7 +46,6 @@
     },
     "scripts": {
         "build-project": [
-
             "composer install",
             "php yii migrate --interactive=0 && php yii migrate-control --interactive=0",
             "php yii control/user/create-root"

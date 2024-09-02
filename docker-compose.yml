@@ -1,9 +1,106 @@
-version: '2'
+version: '3'
+
+networks:
+  vladislavnet:
+    ipam:
+      driver: default
+      config:
+        - subnet: "172.10.0.0/24"
+
 services:
-  php:
-    image: yiisoftware/yii2-php:7.4-apache
+  app:
+    env_file:
+      - .env
+    build: docker/php/cli
     volumes:
-      - ~/.composer-docker/cache:/root/.composer/cache:delegated
-      - ./:/app:delegated
+      - ./:/app
+    networks:
+      - vladislavnet
+    depends_on:
+      - db
+    extra_hosts:
+      - "vladislavin.local=${NGINX_NETWORK_IP}"
+    working_dir: /app
+    tty: true
+  php-fpm:
+    build:
+      context: ./
+      dockerfile: docker/php/Dockerfile
+    expose:
+      - 9000
+    networks:
+      vladislavnet:
+        aliases:
+          - php-fpm
+    extra_hosts:
+      - "vladislavin.local=${NGINX_NETWORK_IP}"
+    depends_on:
+      - db
+    volumes:
+      - ./:/app
+  nginx:
+    image: nginx:alpine
     ports:
-      - '8000:80'
+      - "80:80"
+    volumes:
+      - ./:/app
+      - ./docker/nginx/conf/:/etc/nginx/conf.d/
+      - ./docker/var/log/nginx/:/var/log/container/
+    depends_on:
+      - php-fpm
+    networks:
+      vladislavnet:
+        ipv4_address: ${NGINX_NETWORK_IP}
+        aliases:
+          - nginx
+          - vladislavin.local
+
+    restart: on-failure
+    tty: false
+  composer_installation:
+    image: composer
+    volumes:
+      - ./:/app
+    command: composer install --ignore-platform-reqs
+    depends_on:
+      - app
+      - db
+      - php-fpm
+      - nginx
+  db:
+    env_file:
+      - .env
+    image: mysql:latest
+    networks:
+      vladislavnet:
+        aliases:
+          - db
+          - mysql
+    ports:
+      - "3336:${MYSQL_PORT}"
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DB_NAME}
+    volumes:
+      - ./docker/var/lib/mysql:/var/lib/mysql
+      - ./docker/var/log/mysql:/var/log/mysql
+      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+  migration:
+    env_file:
+      - .env
+    build:
+      dockerfile: docker/migration/Dockerfile
+    volumes:
+      - ./:/app
+      - ./docker/migration/migrate.sh:/app/migrate.sh
+    networks:
+      vladislavnet:
+        aliases:
+          - db
+          - mysql
+    depends_on:
+      - db
+      - app
+      - php-fpm
+      - nginx
+    restart: on-failure

@@ -16,10 +16,17 @@ class UserService
     {
         $transaction = \Yii::$app->db->beginTransaction();
         try {
+            $user = User::findByUsername($dto->username);
+
+            if ($user) {
+                throw new \Exception(sprintf('Пользователь с именем %s уже существует!', $dto->username));
+            }
+
             $user = new User();
             $user->username = $dto->username;
             $user->status = $dto->status;
             $user->setPassword($dto->password);
+
             if (!$user->save()) {
                 $transaction->rollBack();
                 var_dump($user->getErrors());
