@@ -1,2 +1,2 @@
 # create databases
-CREATE DATABASE IF NOT EXISTS `vladislav_in`;
+CREATE DATABASE IF NOT EXISTS `${MYSQL_DB_NAME}`;

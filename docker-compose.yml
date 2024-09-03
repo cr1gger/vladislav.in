@@ -19,7 +19,7 @@ services:
     depends_on:
       - db
     extra_hosts:
-      - "vladislavin.local=${NGINX_NETWORK_IP}"
+      - "${DOMAIN_NAME}=${NGINX_NETWORK_IP}"
     working_dir: /app
     tty: true
   php-fpm:
@@ -33,19 +33,24 @@ services:
         aliases:
           - php-fpm
     extra_hosts:
-      - "vladislavin.local=${NGINX_NETWORK_IP}"
+      - "${DOMAIN_NAME}=${NGINX_NETWORK_IP}"
     depends_on:
       - db
     volumes:
       - ./:/app
   nginx:
-    image: nginx:alpine
+    env_file:
+      - .env
+    build:
+      context: .
+      dockerfile: docker/nginx/Dockerfile
+      args:
+        - DOMAIN_NAME=${DOMAIN_NAME}
     ports:
-      - "80:80"
+      - "${NGINX_PUBLIC_PORT}:${NGINX_INTERNAL_PORT}"
     volumes:
       - ./:/app
-      - ./docker/nginx/conf/:/etc/nginx/conf.d/
-      - ./docker/var/log/nginx/:/var/log/container/
+
     depends_on:
       - php-fpm
     networks:
@@ -53,7 +58,7 @@ services:
         ipv4_address: ${NGINX_NETWORK_IP}
         aliases:
           - nginx
-          - vladislavin.local
+          - ${DOMAIN_NAME}
 
     restart: on-failure
     tty: false
@@ -77,7 +82,7 @@ services:
           - db
           - mysql
     ports:
-      - "3336:${MYSQL_PORT}"
+      - "${MYSQL_PUBLIC_PORT}:${MYSQL_PORT}"
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DB_NAME}

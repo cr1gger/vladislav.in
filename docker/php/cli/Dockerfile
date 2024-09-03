@@ -50,4 +50,3 @@ RUN curl -sS https://getcomposer.org/installer | php -- --install-dir=/usr/local
 RUN addgroup -S -g 777 develop \
     && adduser -S -D -u 777 -s /sbin/nologin -h /home/develop -G develop develop
 
-CMD ["php --version"]
