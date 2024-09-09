@@ -126,4 +126,26 @@ class User extends ActiveRecord implements IdentityInterface
     {
         $this->password = Yii::$app->security->generatePasswordHash($password);
     }
+
+    public function generateAccessToken()
+    {
+        $head = json_encode([
+            'alg' => 'HS256',
+            'typ' => 'JWT'
+        ]);
+
+        $payload = json_encode([
+            'expired_at' => time() + 60 * 60 * 24 * 7,
+            'username' => $this->username,
+        ]);
+
+        $sign = hash_hmac(
+            'sha256',
+            sprintf('%s.%s', $head, $payload),
+            $_ENV['USER_TOKEN_SECRET_KEY']
+        );
+
+
+        return sprintf('%s.%s.%s', base64_encode($head), base64_encode($payload), base64_encode($sign));
+    }
 }

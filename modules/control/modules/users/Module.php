@@ -2,6 +2,7 @@
 
 namespace app\modules\control\modules\users;
 
+use app\modules\control\helpers\ControlHelper;
 use app\modules\control\interfaces\ModuleInterface;
 use yii\base\BootstrapInterface;
 use Yii;
@@ -75,6 +76,11 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleInter
      */
     public static function canAccess(): bool
     {
+
+        if (ControlHelper::isApiRequest()) {
+            return true;
+        }
+
         return Yii::$app->user->can('control.users.access');
     }
 }

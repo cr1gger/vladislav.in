@@ -88,10 +88,11 @@ class UserCreateForm extends Model
             $user->username = $this->username;
             $user->status = User::STATUS_ACTIVE;
             $user->setPassword($this->password);
+            $user->access_token = $user->generateAccessToken();
 
             if ($user->save()) {
                 $roleAssigned = RbacService::assignRolesList($user->id, $this->roles);
-                $permissionsAssigned = RbacService::assignPermissionList($user->id, $this->permissions);
+                $permissionsAssigned = RbacService::assignPermissionList($user->id, $this->getPermissions());
 
                 if (!$roleAssigned || !$permissionsAssigned) {
                     $this->addError('username', 'Ошибка при назначении роли или разрешений');
@@ -115,6 +116,18 @@ class UserCreateForm extends Model
 
             return false;
         }
+    }
+
+    /**
+     * @return null|array
+     */
+    protected function getPermissions(): ?array
+    {
+        if (empty($this->permissions)) {
+            return null;
+        }
+
+        return $this->permissions;
     }
 
 }

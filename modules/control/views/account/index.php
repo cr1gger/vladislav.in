@@ -8,7 +8,6 @@ $publicWeb = Yii::$app->getModule('control')->params['publicWeb'];
 <div class="container-fluid">
     <div class="row">
         <div class="col-md-3">
-
             <div class="card card-primary card-outline">
                 <div class="card-body box-profile">
                     <div class="text-center">
@@ -35,8 +34,6 @@ $publicWeb = Yii::$app->getModule('control')->params['publicWeb'];
                 </div>
 
             </div>
-
-
             <div class="card card-primary">
                 <div class="card-header">
                     <h3 class="card-title">Информация</h3>
@@ -57,9 +54,7 @@ $publicWeb = Yii::$app->getModule('control')->params['publicWeb'];
                 </div>
 
             </div>
-
         </div>
-
         <div class="col-md-9">
             <div class="card card-primary card-outline">
                 <div class="card-header p-2">
@@ -69,6 +64,9 @@ $publicWeb = Yii::$app->getModule('control')->params['publicWeb'];
                         </li>
                         <li class="nav-item">
                             <a class="nav-link active" href="#settings" data-toggle="tab">Настройки</a>
+                        </li>
+                        <li class="nav-item">
+                            <a class="nav-link" href="#api" data-toggle="tab">API</a>
                         </li>
                     </ul>
                 </div>
@@ -102,6 +100,26 @@ $publicWeb = Yii::$app->getModule('control')->params['publicWeb'];
                                         <button type="submit" class="btn btn-danger">Изменить</button>
                                     </div>
                                 </div>
+                            <?=Html::endForm()?>
+                        </div>
+
+                        <div class="tab-pane" id="api">
+                            <p>Для доступа к API вам потребуется ключ</p>
+                            <p>Его нужно передавать в заголовках вместе с запросом: Bearer <Token></p>
+                            <?= Html::beginForm('/control/account/generate-api-token', 'post', [
+                                'class' => 'form-horizontal', // TODO: Переделать на ActiveForm
+                            ])?>
+                            <div class="form-group row">
+                                <label for="token" class="col-sm-2 col-form-label">Ключ</label>
+                                <div class="col-sm-10">
+                                    <textarea name="token" id="token" cols="80" rows="10" disabled="disabled"><?=$user->access_token?></textarea>
+                                </div>
+                            </div>
+                            <div class="form-group row">
+                                <div class="offset-sm-2 col-sm-10">
+                                    <button type="submit" class="btn btn-danger">Пересоздать токен</button>
+                                </div>
+                            </div>
                             <?=Html::endForm()?>
                         </div>
 

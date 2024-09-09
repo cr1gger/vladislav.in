@@ -92,4 +92,23 @@ class UserService
 
         return true;
     }
+
+    /**
+     * Создает новый Api Token для пользователя
+     * @param int $id
+     * @return bool
+     */
+    public static function regenerateUserToken(int $id): bool
+    {
+        $user = User::findOne($id);
+
+        if (!$user) {
+            return false;
+        }
+
+        $user->access_token = $user->generateAccessToken();
+        $user->updateAttributes(['access_token']);
+
+        return true;
+    }
 }

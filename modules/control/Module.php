@@ -2,6 +2,7 @@
 
 namespace app\modules\control;
 
+use app\modules\control\helpers\ControlHelper;
 use Yii;
 use yii\base\BootstrapInterface;
 use yii\filters\AccessControl;
@@ -18,9 +19,12 @@ class Module extends \yii\base\Module implements BootstrapInterface
     public $controllerNamespace = 'app\modules\control\controllers';
     public $layout = 'main';
 
-    public function behaviors()
+    /**
+     * @return array|array[]
+     */
+    public function behaviors(): array
     {
-        if ($this->isWebApp()) {
+        if (ControlHelper::isWebApp() && !ControlHelper::isApiRequest()) {
             return [
                 'access' => [
                     'class' => AccessControl::class,
@@ -49,7 +53,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
         parent::init();
         $this->modules = require(__DIR__ . '/config/modules.php');
 
-        if ($this->isWebApp()) {
+        if (ControlHelper::isWebApp()) {
             $this->params['publicWeb'] = Yii::$app->assetManager->getPublishedUrl('@control/web');
         }
     }
@@ -57,7 +61,7 @@ class Module extends \yii\base\Module implements BootstrapInterface
 
     public function bootstrap($app)
     {
-        if ($this->isConsoleApp($app)) {
+        if (ControlHelper::isConsoleApp($app)) {
             $this->controllerNamespace = 'app\modules\control\commands';
         }
     }
@@ -86,23 +90,5 @@ class Module extends \yii\base\Module implements BootstrapInterface
             //'iconClass' => 'nav-icon fas fa-th',
             //'badge' => '<span class="right badge badge-danger">New</span>',
         ];
-    }
-
-    public function isConsoleApp($app = null): bool
-    {
-        if (!$app) {
-            $app = Yii::$app;
-        }
-
-        return ($app instanceof \yii\console\Application);
-    }
-
-    public function isWebApp($app = null): bool
-    {
-        if (!$app) {
-            $app = Yii::$app;
-        }
-
-        return ($app instanceof \yii\web\Application);
     }
 }

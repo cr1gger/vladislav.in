@@ -68,6 +68,16 @@ class AccountController extends Controller
         }
 
         return $this->redirect(['index']);
+    }
 
+    public function actionGenerateApiToken()
+    {
+        if (UserService::regenerateUserToken(Yii::$app->user->identity->id)){
+            Toast::success('Новый ключ успешно создан!');
+        } else {
+            Toast::error('Не удалось создать новый ключ для API');
+        }
+
+        return $this->redirect(['index']);
     }
 }

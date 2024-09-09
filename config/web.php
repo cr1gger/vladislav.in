@@ -3,6 +3,7 @@
 $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 $common = require __DIR__ . '/../common/config/common.php';
+$logs = require __DIR__ . '/../common/config/logs.php';
 
 $config = [
     'id' => 'basic',
@@ -15,6 +16,14 @@ $config = [
         ],
     ],
     'homeUrl' => '/control',
+    'container' => [
+        'definitions' => [
+        ],
+        'singletons' => [
+            \Psr\Log\LoggerInterface::class => \app\common\logger\Logger::class
+        ],
+
+    ],
     'components' => [
         'assetManager' => [
             'class' => 'yii\web\AssetManager',
@@ -49,15 +58,7 @@ $config = [
             // send all mails to a file by default.
             'useFileTransport' => true, // TODO: Исправить, сделать нормальный почтовый сервер
         ],
-        'log' => [
-            'traceLevel' => YII_DEBUG ? 3 : 0,
-            'targets' => [
-                [
-                    'class' => 'yii\log\FileTarget',
-                    'levels' => ['error', 'warning'],
-                ],
-            ],
-        ],
+        'log' => $logs,
         'db' => $db,
         'urlManager' => [
             'enablePrettyUrl' => true,
@@ -69,18 +70,18 @@ $config = [
 ];
 
 if (YII_ENV_DEV) {
-    // configuration adjustments for 'dev' environment
-    $config['bootstrap'][] = 'debug';
-    $config['modules']['debug'] = [
-        'class' => 'yii\debug\Module',
-        // uncomment the following to add your IP if you are not connecting from localhost.
-        //'allowedIPs' => ['127.0.0.1', '::1'],
-    ];
+    if (YII_DEBUG) {
+        $config['bootstrap'][] = 'debug';
+        $config['modules']['debug'] = [
+            'class' => 'yii\debug\Module',
+            'allowedIPs' => ['*'],
+        ];
+    }
 
     $config['bootstrap'][] = 'gii';
     $config['modules']['gii'] = [
         'class' => 'yii\gii\Module',
-        'allowedIPs' => ['127.0.0.1', '::1'],
+        'allowedIPs' => ['*'],
         'generators' => [
             'adminModule' => [
                 'class' => \app\gii\templates\AdminModule\Generator::class, // класс генератора
