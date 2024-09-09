@@ -7,5 +7,5 @@ RUN curl -sSLf \
 
 RUN apt-get update && apt-get install -y unzip locales wait-for-it && \
     install-php-extensions bcmath sockets pdo pdo_mysql zip ldap
-
+RUN chmod +x /app/docker/migration/migrate.sh
 ENTRYPOINT ["/app/docker/migration/migrate.sh"]
