@@ -10,6 +10,8 @@ $dotenv->load(__DIR__.'/../.env');
 // comment out the following two lines when deployed to production
 defined('YII_DEBUG') or define('YII_DEBUG', (bool)$_ENV['YII_DEBUG']);
 defined('YII_ENV') or define('YII_ENV', $_ENV['YII_ENV']);
+
+
 ini_set('display_errors', '1');
 ini_set('display_startup_errors', '1');
 error_reporting(E_ALL);

@@ -22,6 +22,8 @@ services:
       - "${DOMAIN_NAME}=${NGINX_NETWORK_IP}"
     working_dir: /app
     tty: true
+
+
   php-fpm:
     build:
       context: ./
@@ -38,6 +40,8 @@ services:
       - db
     volumes:
       - ./:/app
+
+
   nginx:
     env_file:
       - .env
@@ -62,6 +66,8 @@ services:
 
     restart: on-failure
     tty: false
+
+
   composer_installation:
     image: composer
     volumes:
@@ -90,6 +96,8 @@ services:
       - ./docker/var/lib/mysql:/var/lib/mysql
       - ./docker/var/log/mysql:/var/log/mysql
       - ./docker/mysql/init:/docker-entrypoint-initdb.d
+
+
   migration:
     env_file:
       - .env
@@ -97,7 +105,6 @@ services:
       dockerfile: docker/migration/Dockerfile
     volumes:
       - ./:/app
-      - ./docker/migration/migrate.sh:/app/migrate.sh
     networks:
       vladislavnet:
         aliases:
