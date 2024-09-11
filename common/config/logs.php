@@ -3,7 +3,7 @@
 
 $fileLogger = new \Monolog\Logger('app_file_logger');
 $fileLoggerHandler = new \Monolog\Handler\StreamHandler(
-    __DIR__ . '/../../runtime/logs/' . date('Y-m-d') . 'wqw.log',
+    __DIR__ . '/../../runtime/logs/' . date('Y-m-d') . '.log',
     YII_DEBUG ? \Monolog\Logger::DEBUG : \Monolog\Logger::INFO,
 );
 $fileLoggerHandler->setFormatter(new \Monolog\Formatter\JsonFormatter());
