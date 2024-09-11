@@ -105,6 +105,7 @@ class Generator extends \yii\gii\Generator
         $output = <<<EOD
 <p>Модуль успешно создан!</p>
 <p>Для включения модуля, добавьте его в список активных модулей <code>app\modules\control\config\modules.php</code>:</p>
+<p>Так же был сгенерирован Example контроллер для API, вы можете опробовать его отправив GET запрос по <code>/api/gameSpy/example</code></p>
 EOD;
         $code = <<<EOD
 <?php
@@ -123,7 +124,7 @@ EOD;
      */
     public function requiredTemplates()
     {
-        return ['module.php', 'controller.php', 'view.php', 'command-controller.php'];
+        return ['module.php', 'controller.php', 'view.php', 'command-controller.php', 'api-controller.php'];
     }
 
     /**
@@ -149,6 +150,10 @@ EOD;
         $files[] = new CodeFile(
             $modulePath . '/commands/DefaultController.php',
             $this->render("command-controller.php")
+        );
+        $files[] = new CodeFile(
+            $modulePath . '/api/controllers/ExampleController.php',
+            $this->render("api-controller.php")
         );
 
         return $files;
@@ -183,6 +188,10 @@ EOD;
     public function getModuleClass()
     {
         return '\\'.$this->getModuleNamespace() . '\Module';
+    }
 
+    public function getApiControllerNamespace()
+    {
+        return $this->moduleNamespace . '\api\controllers';
     }
 }
