@@ -7,10 +7,12 @@ use Psr\Log\LoggerInterface;
 use ReflectionClass;
 use Yii;
 use yii\web\NotFoundHttpException;
+use yii\web\Request;
 
 class ApiController extends AbstractApiController
 {
     public LoggerInterface $logger;
+
     public function __construct($id, $module, LoggerInterface $logger, $config = [])
     {
         parent::__construct($id, $module, $config);
@@ -38,17 +40,32 @@ class ApiController extends AbstractApiController
 
         $module->controllerNamespace = sprintf('%s\\api\\controllers', $moduleNamespace);
 
-        Yii::error('qweqweqwe');
-        $this->log();
+        $this->log($controlApiModule, $controlApiEndpoint, $controlApiOperation);
 
         return $module->runAction($route, $this->request->queryParams);
     }
 
-    private function log() {
+    private function log($controlApiModule, $controlApiEndpoint, $controlApiOperation)
+    {
+        $user = Yii::$app->user->identity ?? null;
 
-        Yii::info('Привет');
-//        $this->logger->info('Логирую другую информацию!', [
-//            'category' => 'api-request'
-//        ]);
+        $request = $this->request ?? Yii::$app->request;
+        $ip = $request instanceof Request ? $request->getUserIP() : '-';
+        $logData = [
+            'guest' => Yii::$app->user->isGuest,
+            'datetime' => date('Y-m-d H:i:s'),
+            'module' => $controlApiModule,
+            'controller' => $controlApiEndpoint,
+            'action' => $controlApiOperation,
+            'ip' => $ip,
+            'category' => 'app/api_access',
+        ];
+
+        if ($user) {
+            $logData['user'] = $user->username;
+            $logData['userId'] = $user->id;
+        }
+
+        $this->logger->info('Доступ к API', $logData);
     }
 }

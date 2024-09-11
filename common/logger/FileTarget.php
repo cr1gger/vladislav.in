@@ -14,6 +14,9 @@ use yii\log\LogRuntimeException;
 use yii\log\Target;
 use yii\web\Request;
 
+/**
+ * @deprecated
+ */
 class FileTarget extends \yii\log\FileTarget
 {
     public function init()

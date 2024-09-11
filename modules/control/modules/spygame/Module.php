@@ -1,21 +1,20 @@
 <?php
 
-namespace app\modules\control\modules\users;
+namespace app\modules\control\modules\spygame;
 
-use app\modules\control\helpers\ControlHelper;
 use app\modules\control\interfaces\ModuleInterface;
 use yii\base\BootstrapInterface;
 use Yii;
 
 /**
- * users module definition class
+ * spygame module definition class
  */
 class Module extends \yii\base\Module implements BootstrapInterface, ModuleInterface
 {
     /**
      * {@inheritdoc}
      */
-    public $controllerNamespace = 'app\modules\control\modules\users\controllers';
+    public $controllerNamespace = 'app\modules\control\modules\spygame\controllers';
 
     /**
      * {@inheritdoc}
@@ -23,22 +22,17 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleInter
     public function init()
     {
         if (!self::canAccess()) {
-            throw new \yii\web\ForbiddenHttpException('Доступ запрещен');
+            throw new \yii\web\ForbiddenHttpException('Доступ к модулю запрещен');
         }
-
         parent::init();
 
         // здесь находится пользовательский код инициализации
     }
 
-    /**
-     * @param $app
-     * @return void
-     */
     public function bootstrap($app)
     {
         if ($app instanceof \yii\console\Application) {
-            $this->controllerNamespace = 'app\modules\control\modules\users\commands';
+            $this->controllerNamespace = 'app\modules\control\modules\spygame\commands';
         }
     }
 
@@ -47,7 +41,7 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleInter
      */
     public static function getName(): string
     {
-        return 'Пользователи';
+        return 'Игра шпион';
     }
 
     /**
@@ -60,22 +54,22 @@ class Module extends \yii\base\Module implements BootstrapInterface, ModuleInter
         return [
             'label' => self::getName(),
             'icon' => 'th',
-            'url' => ['/control/users'],
-            'active' => $route === 'control/users/default/index',
+            'url' => ['/control/spygame'],
+            'active' => $route === 'control/spygame/default/index',
             'visible' => true,
             'target' => '_self',
             'iconStyle' => 'fas',
             'iconClassAdded' => '',
-            'iconClass' => 'nav-icon fas fa-users',
+            //'iconClass' => 'nav-icon fas fa-th',
             //'badge' => '<span class="right badge badge-danger">New</span>',
         ];
     }
 
     /**
-     * @return bool
-     */
+    * @return bool
+    */
     public static function canAccess(): bool
     {
-        return Yii::$app->user->can('control.users.access');
+        return Yii::$app->user->can('control.spygame.access');
     }
 }

@@ -37,6 +37,12 @@ $config = [
             'migrationTable' => 'migration_control',
             'migrationPath' => null,
         ],
+        'migrate-spygame' => [
+            'class' => 'yii\console\controllers\MigrateController',
+            'migrationNamespaces' => ['app\modules\control\modules\spygame\migrations'],
+            'migrationTable' => 'migration_spygame',
+            'migrationPath' => null,
+        ],
 
 //        'fixture' => [ // Fixture generation command line.
 //            'class' => 'yii\faker\FixtureController',

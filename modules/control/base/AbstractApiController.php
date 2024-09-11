@@ -2,7 +2,6 @@
 
 namespace app\modules\control\base;
 
-use Psr\Log\LoggerInterface;
 use yii\rest\Controller;
 
 abstract class AbstractApiController extends Controller

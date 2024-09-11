@@ -3,11 +3,12 @@
 
 $fileLogger = new \Monolog\Logger('app_file_logger');
 $fileLoggerHandler = new \Monolog\Handler\StreamHandler(
-    __DIR__ . '/../../runtime/logs/' . date('Y-m-d') . '.log',
-    \Monolog\Logger::DEBUG
+    __DIR__ . '/../../runtime/logs/' . date('Y-m-d') . 'wqw.log',
+    YII_DEBUG ? \Monolog\Logger::DEBUG : \Monolog\Logger::INFO,
 );
 $fileLoggerHandler->setFormatter(new \Monolog\Formatter\JsonFormatter());
 $fileLogger->pushHandler($fileLoggerHandler);
+$fileLogger->pushProcessor(new \Monolog\Processor\PsrLogMessageProcessor());
 
 return [
     'traceLevel' => YII_DEBUG ? 3 : 0,
@@ -15,9 +16,11 @@ return [
         [
             'class' => 'samdark\log\PsrTarget',
             'logger' => $fileLogger,
-
             'levels' => ['info', 'error', 'warning'],
-            'addTimestampToContext' => true,
+//            'addTimestampToContext' => true,
+//            'categories' => [
+//                'app/*'
+//            ]
         ]
     ],
 ];

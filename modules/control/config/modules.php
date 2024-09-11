@@ -10,4 +10,7 @@ return [
     'notes' => [
         'class' => \app\modules\control\modules\notes\Module::class,
     ],
+    'spygame' => [
+        'class' => \app\modules\control\modules\spygame\Module::class,
+    ],
 ];

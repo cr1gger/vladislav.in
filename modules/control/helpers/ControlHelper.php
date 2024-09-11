@@ -11,6 +11,10 @@ final class ControlHelper
      */
     public static function isApiRequest()
     {
+        if (!Yii::$app->controller) {
+            return false;
+        }
+
         return (Yii::$app->controller->id === 'api' && Yii::$app->controller->action->id === 'index');
     }
 

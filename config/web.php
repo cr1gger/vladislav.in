@@ -16,14 +16,6 @@ $config = [
         ],
     ],
     'homeUrl' => '/control',
-    'container' => [
-        'definitions' => [
-        ],
-        'singletons' => [
-            \Psr\Log\LoggerInterface::class => \app\common\logger\Logger::class
-        ],
-
-    ],
     'components' => [
         'assetManager' => [
             'class' => 'yii\web\AssetManager',

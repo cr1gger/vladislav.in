@@ -10,57 +10,47 @@ class Logger implements LoggerInterface
 {
     public function log($level, $message, array $context = array())
     {
-        Yii::getLogger()->log($message, $level, $context['category'] ?? 'default');
+        Yii::getLogger()->log(new \samdark\log\PsrMessage($message, $context), $level);
     }
 
     public function emergency($message, array $context = array())
     {
-        $this->customLog($message, $context, LogLevel::EMERGENCY);
+        $this->log(LogLevel::EMERGENCY, $message, $context);
     }
 
     public function alert($message, array $context = array())
     {
-        $this->customLog($message, $context, LogLevel::ALERT);
+        $this->log(LogLevel::ALERT, $message, $context);
     }
 
     public function critical($message, array $context = array())
     {
-        $this->customLog($message, $context, LogLevel::CRITICAL);
+        $this->log(LogLevel::CRITICAL, $message, $context);
     }
 
     public function error($message, array $context = array())
     {
-        $this->customLog($message, $context, \yii\log\Logger::LEVEL_ERROR);
+        $this->log(LogLevel::ERROR, $message, $context);
     }
 
     public function warning($message, array $context = array())
     {
-        $this->customLog($message, $context, \yii\log\Logger::LEVEL_WARNING);
+        $this->log(LogLevel::WARNING, $message, $context);
     }
 
     public function notice($message, array $context = array())
     {
-        $this->customLog($message, $context, LogLevel::NOTICE);
+        $this->log(LogLevel::NOTICE, $message, $context);
     }
 
     public function info($message, array $context = array())
     {
-        $this->customLog($message, $context, \yii\log\Logger::LEVEL_INFO);
+        $this->log(LogLevel::INFO, $message, $context);
     }
 
     public function debug($message, array $context = array())
     {
-        $this->customLog($message, $context, \yii\log\Logger::LEVEL_TRACE);
-    }
-
-    public function customLog($message, $context, $level) {
-        $context['message'] = $message;
-        $category = $context['category'] ?? 'default';
-
-
-        $context['category'] = sprintf('app\%s', $category);
-
-        $this->log($level, $message, $context);
+        $this->log(LogLevel::DEBUG, $message, $context);
     }
 
 
