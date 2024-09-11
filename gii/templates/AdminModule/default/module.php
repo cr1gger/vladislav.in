@@ -33,7 +33,7 @@ class <?= $className ?> extends \yii\base\Module implements BootstrapInterface, 
     public function init()
     {
         if (!self::canAccess()) {
-            throw new \yii\web\ForbiddenHttpException('Доступ запрещен');
+            throw new \yii\web\ForbiddenHttpException('Доступ к модулю запрещен');
         }
         parent::init();
 
