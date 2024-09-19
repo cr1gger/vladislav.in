@@ -2,10 +2,7 @@ version: '3'
 
 networks:
   vladislavnet:
-    ipam:
-      driver: default
-      config:
-        - subnet: "162.10.0.0/24"
+    driver: bridge
   traefik_external:
     external: true
 
@@ -20,8 +17,6 @@ services:
       - vladislavnet
     depends_on:
       - db
-    extra_hosts:
-      - "${DOMAIN_NAME}=${NGINX_NETWORK_IP}"
     working_dir: /app
     tty: true
 
@@ -37,13 +32,10 @@ services:
       vladislavnet:
         aliases:
           - php-fpm
-    extra_hosts:
-      - "${DOMAIN_NAME}=${NGINX_NETWORK_IP}"
     depends_on:
       - db
     volumes:
       - ./:/app
-
 
   nginx:
     env_file:
@@ -62,10 +54,7 @@ services:
       - php-fpm
     networks:
       traefik_external:
-        aliases:
-          - host.docker.internal
       vladislavnet:
-        ipv4_address: ${NGINX_NETWORK_IP}
         aliases:
           - nginx
           - ${DOMAIN_NAME}
