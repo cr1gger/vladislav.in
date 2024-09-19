@@ -94,11 +94,6 @@ services:
       dockerfile: docker/migration/Dockerfile
     volumes:
       - ./:/app
-    networks:
-      vladislavnet:
-        aliases:
-          - db
-          - mysql
     depends_on:
       - db
       - app
