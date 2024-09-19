@@ -96,6 +96,8 @@ services:
       dockerfile: docker/migration/Dockerfile
     volumes:
       - ./:/app
+    networks:
+      vladislavnet:
     depends_on:
       - db
       - app
