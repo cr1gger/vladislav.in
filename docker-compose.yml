@@ -62,6 +62,8 @@ services:
       - php-fpm
     networks:
       traefik_external:
+        aliases:
+          - host.docker.internal
       vladislavnet:
         ipv4_address: ${NGINX_NETWORK_IP}
         aliases:
