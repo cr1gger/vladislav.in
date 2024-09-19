@@ -61,6 +61,7 @@ services:
     depends_on:
       - php-fpm
     networks:
+      traefik_external:
       vladislavnet:
         ipv4_address: ${NGINX_NETWORK_IP}
         aliases:
