@@ -26,3 +26,9 @@
 
 # Создание пользователя
 `php yii control/user/create admin admin12345`
+
+# URL для API 
+```
+https://{url}/control/api/{module}{controller}{action}
+https://vladislav.in/control/api/users/account/{default: index}
+```
