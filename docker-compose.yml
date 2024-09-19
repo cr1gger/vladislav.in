@@ -57,6 +57,7 @@ services:
 
     restart: on-failure
     tty: false
+    user: 1001:1001
 
 
   composer_installation:
@@ -87,6 +88,7 @@ services:
       - ./docker/var/lib/mysql:/var/lib/mysql
       - ./docker/var/log/mysql:/var/log/mysql
       - ./docker/mysql/init:/docker-entrypoint-initdb.d
+    user: 1001:1001
 
 
   migration:
@@ -102,3 +104,4 @@ services:
       - php-fpm
       - nginx
     restart: on-failure
+    user: 1001:1001
