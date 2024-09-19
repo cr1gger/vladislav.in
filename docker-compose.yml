@@ -6,6 +6,8 @@ networks:
       driver: default
       config:
         - subnet: "162.10.0.0/24"
+  traefik_external:
+    external: true
 
 services:
   app:
@@ -31,6 +33,9 @@ services:
     expose:
       - 9000
     networks:
+      traefik_external:
+        - aliases:
+            - php-fpm-vladislavin
       vladislavnet:
         aliases:
           - php-fpm

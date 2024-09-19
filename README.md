@@ -11,9 +11,7 @@
    * Настроить окружение `YII_ENV` и `YII_DEBUG`
    * Если нужно, изменить секретный ключ для генерации токенов пользователя: `USER_TOKEN_SECRET_KEY`
 3. Выдать права на папки и файлы:
-   * `chmod -R 776 runtime/`
-   * `chmod -R 776 web/assets`
-   * `chmod -R +x docker/migration/migrate.sh`
+   * ```chmod -R 776 runtime/ && chmod -R 776 web/assets && chmod -R +x docker/migration/migrate.sh```
 4. Запустить: `docker compose up -d`
 
 # Запуск без докера
