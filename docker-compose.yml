@@ -15,6 +15,7 @@ services:
       - db
     working_dir: /app
     tty: true
+    user: 1001:1001
 
 
   php-fpm:
@@ -23,6 +24,7 @@ services:
       dockerfile: docker/php/Dockerfile
     expose:
       - 9000
+    user: 1001:1001
     networks:
       vladislavnet:
         aliases:
