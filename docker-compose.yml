@@ -62,7 +62,7 @@ services:
       - php-fpm
     networks:
       traefik_external:
-        ipv4_address: ${NGINX_NETWORK_IP}
+        ipv4_address: ${TRAEFIK_NETWORK_IP}
       vladislavnet:
         ipv4_address: ${NGINX_NETWORK_IP}
         aliases:
