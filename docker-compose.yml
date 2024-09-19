@@ -34,8 +34,6 @@ services:
       - 9000
     networks:
       traefik_external:
-        - aliases:
-            - php-fpm-vladislavin
       vladislavnet:
         aliases:
           - php-fpm
