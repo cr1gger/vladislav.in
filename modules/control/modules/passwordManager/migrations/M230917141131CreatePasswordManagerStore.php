@@ -1,6 +1,6 @@
 <?php
 
-namespace app\modules\control\migrations;
+namespace app\modules\control\modules\passwordManager\migrations;
 
 use yii\db\Migration;
 
