@@ -1,13 +1,12 @@
 <?php
-/**
- * @link https://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license https://www.yiiframework.com/license/
- */
+namespace app\migrations;
+
 
 use yii\base\InvalidConfigException;
 use yii\db\Migration;
 use yii\rbac\DbManager;
+use Yii;
+
 
 /**
  * Adds index on `user_id` column in `auth_assignment` table for performance reasons.

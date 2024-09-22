@@ -1,14 +1,13 @@
 <?php
-/**
- * @link https://www.yiiframework.com/
- * @copyright Copyright (c) 2008 Yii Software LLC
- * @license https://www.yiiframework.com/license/
- */
+namespace app\migrations;
+
 
 use yii\base\InvalidConfigException;
 use yii\db\Migration;
 use yii\db\Query;
 use yii\rbac\DbManager;
+use Yii;
+
 
 /**
  * Fix MSSQL trigger.

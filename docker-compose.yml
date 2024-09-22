@@ -15,7 +15,7 @@ services:
       - db
     working_dir: /app
     tty: true
-    user: 1001:1001
+    user: ${GID}:${UID}
 
 
   php-fpm:
@@ -24,7 +24,7 @@ services:
       dockerfile: docker/php/Dockerfile
     expose:
       - 9000
-    user: 1001:1001
+    user: ${GID}:${UID}
     networks:
       vladislavnet:
         aliases:
@@ -80,13 +80,10 @@ services:
           - mysql
     ports:
       - "${MYSQL_PUBLIC_PORT}:${MYSQL_PORT}"
-    environment:
-      MYSQL_ROOT_PASSWORD: ${MYSQL_PASSWORD}
-      MYSQL_DATABASE: ${MYSQL_DB_NAME}
     volumes:
       - ./docker/var/lib/mysql:/var/lib/mysql
       - ./docker/var/log/mysql:/var/log/mysql
-      - ./docker/mysql/init:/docker-entrypoint-initdb.d
+     # - ./docker/mysql/init:/docker-entrypoint-initdb.d
 
 
   migration:

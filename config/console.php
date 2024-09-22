@@ -6,19 +6,6 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 $common = require __DIR__ . '/../common/config/common.php';
 
-$modulesDir = __DIR__ . '/../modules/control/modules/';
-
-$moduleMigrationNamespaces = [];
-foreach(scandir($modulesDir) as $moduleDir) {
-    if ($moduleDir == '.' || $moduleDir == '..') {
-        continue;
-    }
-
-    $moduleMigrationNamespaces[] = [
-        "app\modules\control\modules\\{$moduleDir}\migrations"
-    ];
-}
-
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
@@ -44,20 +31,10 @@ $config = [
     'params' => $params,
 
     'controllerMap' => [
-        'migrate-control' => [
-            'class' => 'yii\console\controllers\MigrateController',
-            'migrationNamespaces' => [
-                'app\modules\control\migrations'
-            ],
-            'migrationTable' => 'migration_control',
+        'migrate' => [
+            'class' => \app\common\migrations\MigrateController::class,
             'migrationPath' => null,
         ],
-        'migrate-modules' => [
-            'class' => 'yii\console\controllers\MigrateController',
-            'migrationNamespaces' => $moduleMigrationNamespaces,
-            'migrationTable' => 'migration_modules',
-            'migrationPath' => null,
-        ]
     ],
 
 ];
