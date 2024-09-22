@@ -6,6 +6,19 @@ $params = require __DIR__ . '/params.php';
 $db = require __DIR__ . '/db.php';
 $common = require __DIR__ . '/../common/config/common.php';
 
+$modulesDir = __DIR__ . '/../modules/control/modules/';
+
+$moduleMigrationNamespaces = [];
+foreach(scandir($modulesDir) as $moduleDir) {
+    if ($moduleDir == '.' || $moduleDir == '..') {
+        continue;
+    }
+
+    $moduleMigrationNamespaces[] = [
+        "app\modules\control\modules\\{$moduleDir}\migrations"
+    ];
+}
+
 $config = [
     'id' => 'basic-console',
     'basePath' => dirname(__DIR__),
@@ -33,20 +46,18 @@ $config = [
     'controllerMap' => [
         'migrate-control' => [
             'class' => 'yii\console\controllers\MigrateController',
-            'migrationNamespaces' => ['app\modules\control\migrations'],
+            'migrationNamespaces' => [
+                'app\modules\control\migrations'
+            ],
             'migrationTable' => 'migration_control',
             'migrationPath' => null,
         ],
-        'migrate-spygame' => [
+        'migrate-modules' => [
             'class' => 'yii\console\controllers\MigrateController',
-            'migrationNamespaces' => ['app\modules\control\modules\spygame\migrations'],
-            'migrationTable' => 'migration_spygame',
+            'migrationNamespaces' => $moduleMigrationNamespaces,
+            'migrationTable' => 'migration_modules',
             'migrationPath' => null,
-        ],
-
-//        'fixture' => [ // Fixture generation command line.
-//            'class' => 'yii\faker\FixtureController',
-//        ],
+        ]
     ],
 
 ];
