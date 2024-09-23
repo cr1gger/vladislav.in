@@ -7,6 +7,7 @@ use Yii;
 class MigrateController extends \yii\console\controllers\MigrateController
 {
     public $moduleName;
+    public $templateFile = '@app/common/migrations/template.php';
 
     /**
      * @param $actionID
