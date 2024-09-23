@@ -25,11 +25,13 @@ class MigrateController extends \yii\console\controllers\MigrateController
      */
     public function actionCreate($name)
     {
-        $this->checkModuleExist();
+        if ($this->checkModuleExist()) {
+            $namespace = $this->moduleName == 'control' ?
+                "app\\modules\\control\\migrations" :
+                "app\\modules\\control\\modules\\{$this->moduleName}\\migrations";
 
-        $this->migrationNamespaces = [
-            "app\\modules\\control\\modules\\{$this->moduleName}\\migrations"
-        ];
+            $this->migrationNamespaces = [$namespace];
+        }
 
         return parent::actionCreate($name);
     }
@@ -38,8 +40,12 @@ class MigrateController extends \yii\console\controllers\MigrateController
      * @return void
      * @throws \Exception
      */
-    protected function checkModuleExist()
+    protected function checkModuleExist(): bool
     {
+        if ($this->moduleName === null) {
+            return false;
+        }
+
         $module = Yii::$app->getModule($this->moduleName);
 
         if (!$module) {
@@ -49,6 +55,8 @@ class MigrateController extends \yii\console\controllers\MigrateController
                 throw new \Exception("Module '{$this->moduleName}' not found.");
             }
         }
+
+        return true;
     }
 
     /**
@@ -59,7 +67,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
         // TODO: открефакторить - сделать через Yii::$app->getModules()
         $modulesDir = __DIR__ . '/../../modules/control/modules/';
         $moduleMigrationNamespaces = [];
-        foreach(scandir($modulesDir) as $moduleDir) {
+        foreach (scandir($modulesDir) as $moduleDir) {
             if ($moduleDir == '.' || $moduleDir == '..') {
                 continue;
             }
