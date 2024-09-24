@@ -78,6 +78,8 @@ class <?= $className ?> extends \yii\base\Module implements ModuleInterface
     */
     public static function canAccess(): bool
     {
-        return Yii::$app->user->can('control.<?= $generator->moduleID ?>.access');
+        if (!ControlHelper::isConsoleApp()) {
+            return Yii::$app->user->can('control.<?= $generator->moduleID ?>.access');
+        }
     }
 }
