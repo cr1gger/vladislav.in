@@ -13,14 +13,14 @@ echo "<?php\n";
 
 namespace <?= $ns ?>;
 
+use app\modules\control\helpers\ControlHelper;
 use app\modules\control\interfaces\ModuleInterface;
-use yii\base\BootstrapInterface;
 use Yii;
 
 /**
  * <?= $generator->moduleID ?> module definition class
  */
-class <?= $className ?> extends \yii\base\Module implements BootstrapInterface, ModuleInterface
+class <?= $className ?> extends \yii\base\Module implements ModuleInterface
 {
     /**
      * {@inheritdoc}
@@ -35,16 +35,13 @@ class <?= $className ?> extends \yii\base\Module implements BootstrapInterface, 
         if (!self::canAccess()) {
             throw new \yii\web\ForbiddenHttpException('Доступ к модулю запрещен');
         }
+
+        if (ControlHelper::isConsoleApp()) {
+            $this->controllerNamespace = 'app\modules\control\modules\<?= $generator->moduleID ?>\commands';
+        }
         parent::init();
 
         // здесь находится пользовательский код инициализации
-    }
-
-    public function bootstrap($app)
-    {
-        if ($app instanceof \yii\console\Application) {
-            $this->controllerNamespace = 'app\modules\control\modules\<?= $generator->moduleID ?>\commands';
-        }
     }
 
     /**
