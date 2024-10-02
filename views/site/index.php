@@ -2,7 +2,7 @@
 
 /** @var yii\web\View $this */
 
-$this->title = 'My Yii Application';
+$this->title = 'VLADISLAV.IN - Personal site';
 ?>
 <div class="box brand">
     <h1>VLADISLAV.IN</h1>
