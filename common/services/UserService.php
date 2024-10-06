@@ -13,9 +13,12 @@ class UserService
      * @return User
      * @throws Exception
      */
-    public static function create(CreateUserDto $dto): User
+    public static function create(CreateUserDto $dto, $useTransaction = true): User
     {
-        $transaction = \Yii::$app->db->beginTransaction();
+        if ($useTransaction) {
+            $transaction = \Yii::$app->db->beginTransaction();
+        }
+
         try {
             $user = User::findByUsername($dto->username);
 
@@ -30,7 +33,9 @@ class UserService
             $user->setPassword($dto->password);
 
             if (!$user->save()) {
-                $transaction->rollBack();
+                if ($useTransaction) {
+                    $transaction->rollBack();
+                }
                 var_dump($user->getErrors());
                 throw new \Exception('Ошибка при создании пользователя');
             }
@@ -42,12 +47,16 @@ class UserService
                 RbacService::assignPermissionList($user->id, $dto->permissions);
             }
 
-            $transaction->commit();
+            if ($useTransaction) {
+                $transaction->commit();
+            }
 
             return $user;
 
         } catch (\Exception $e) {
-            $transaction->rollBack();
+            if ($useTransaction) {
+                $transaction->rollBack();
+            }
             throw $e;
         }
     }
