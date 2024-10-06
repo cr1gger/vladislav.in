@@ -4,15 +4,16 @@ namespace app\common\services;
 
 use app\common\dto\CreateUserDto;
 use app\common\models\User;
+use yii\db\Exception;
 
 class UserService
 {
     /**
      * @param CreateUserDto $dto
-     * @return bool|false
-     * @throws \Exception
+     * @return User
+     * @throws Exception
      */
-    public static function create(CreateUserDto $dto): bool
+    public static function create(CreateUserDto $dto): User
     {
         $transaction = \Yii::$app->db->beginTransaction();
         try {
@@ -25,12 +26,13 @@ class UserService
             $user = new User();
             $user->username = $dto->username;
             $user->status = $dto->status;
+            $user->access_token = $user->generateAccessToken();
             $user->setPassword($dto->password);
 
             if (!$user->save()) {
                 $transaction->rollBack();
                 var_dump($user->getErrors());
-                return false;
+                throw new \Exception('Ошибка при создании пользователя');
             }
 
             if ($dto->role) {
@@ -42,7 +44,7 @@ class UserService
 
             $transaction->commit();
 
-            return true;
+            return $user;
 
         } catch (\Exception $e) {
             $transaction->rollBack();

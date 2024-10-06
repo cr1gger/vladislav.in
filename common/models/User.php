@@ -127,6 +127,10 @@ class User extends ActiveRecord implements IdentityInterface
         $this->password = Yii::$app->security->generatePasswordHash($password);
     }
 
+    /**
+     * todo: вынести в user service
+     * @return string
+     */
     public function generateAccessToken()
     {
         $head = json_encode([
