@@ -15,6 +15,7 @@ abstract class AuthApiController extends AbstractApiController
         $behaviors['authenticator'] = [
             'class' => HttpBearerAuth::class,
         ];
+        $behaviors['authenticator']['except'] = ['options'];
         return $behaviors;
     }
 }
