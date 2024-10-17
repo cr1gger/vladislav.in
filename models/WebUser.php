@@ -13,17 +13,17 @@ class WebUser extends User
      * @param $allowCaching
      * @return bool
      */
-    public function can($permissionName, $params = [], $allowCaching = true)
-    {
-        $manager = \Yii::$app->getAuthManager();
-        $userRoles = $manager->getRolesByUser($this->getId());
-
-        foreach ($userRoles as $role) {
-            if ($role->name == DefaultRoles::ROOT) {
-                return true;
-            }
-        }
-
-        return parent::can($permissionName, $params, $allowCaching);
-    }
+//    public function can($permissionName, $params = [], $allowCaching = true)
+//    {
+//        $manager = \Yii::$app->getAuthManager();
+//        $userRoles = $manager->getRolesByUser($this->getId());
+//
+//        foreach ($userRoles as $role) {
+//            if ($role->name == DefaultRoles::ROOT) {
+//                return true;
+//            }
+//        }
+//
+//        return parent::can($permissionName, $params, $allowCaching);
+//    }
 }
