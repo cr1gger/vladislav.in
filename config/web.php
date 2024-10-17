@@ -39,7 +39,7 @@ $config = [
             'class' => app\models\WebUser::class,
             'identityClass' => \app\common\models\User::class,
             'enableAutoLogin' => false,
-            'loginUrl' => ['https://vladislav.in/control/auth/login'],
+            'loginUrl' => ['control/auth/login'],
         ],
         'errorHandler' => [
             'errorAction' => '/control/default/error',
