@@ -12,7 +12,7 @@ $this->title = $name;
 $this->params['breadcrumbs'] = [['label' => $this->title]];
 ?>
 <div class="error-page">
-    <h2 class="headline text-danger"><?= $exception->statusCode ?></h2>
+    <h2 class="headline text-danger"><?= $exception->statusCode ?? 9999 ?></h2>
     <div class="error-content">
         <h3><i class="fas fa-exclamation-triangle text-danger"></i> Oops! <?= Html::encode($name) ?></h3>
         <strong>
