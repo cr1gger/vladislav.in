@@ -24,24 +24,24 @@ class Module extends \yii\base\Module implements BootstrapInterface
      */
     public function behaviors(): array
     {
-//        if (ControlHelper::isWebApp() && !ControlHelper::isApiRequest()) {
-//            return [
-//                'access' => [
-//                    'class' => AccessControl::class,
-//                    'rules' => [
-//                        [
-//                            'allow' => true,
-//                            'roles' => ['@'],
-//                        ],
-//                        [
-//                            'actions' => ['login'],
-//                            'allow' => true,
-//                            'roles' => ['?'],
-//                        ],
-//                    ],
-//                ],
-//            ];
-//        }
+        if (ControlHelper::isWebApp() && !ControlHelper::isApiRequest()) {
+            return [
+                'access' => [
+                    'class' => AccessControl::class,
+                    'rules' => [
+                        [
+                            'allow' => true,
+                            'roles' => ['@'],
+                        ],
+                        [
+                            'actions' => ['login'],
+                            'allow' => true,
+                            'roles' => ['?'],
+                        ],
+                    ],
+                ],
+            ];
+        }
         return parent::behaviors();
     }
 
