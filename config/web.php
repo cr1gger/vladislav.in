@@ -15,7 +15,7 @@ $config = [
             'class' => \app\modules\control\Module::class,
         ],
     ],
-    'homeUrl' => '/control',
+    'homeUrl' => '/',
     'components' => [
         'assetManager' => [
             'class' => 'yii\web\AssetManager',
