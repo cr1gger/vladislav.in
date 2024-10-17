@@ -9,7 +9,7 @@ RUN apt-get update && apt-get install wait-for-it && apt-get install -y unzip
 
 RUN usermod -u 1001 ${USER} && groupmod -g 1001 www-data
 
-USER "1000:1000"
+USER "1001:1001"
 
 WORKDIR /var/www/app
 
