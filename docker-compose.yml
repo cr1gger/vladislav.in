@@ -1,103 +1,62 @@
-networks:
-  vladislavnet:
-    external: true
-
 services:
-  app:
-    env_file:
-      - .env
-    build: docker/php/cli
-    volumes:
-      - ./:/app
-    networks:
-      - vladislavnet
-    depends_on:
-      - db
-    working_dir: /app
-    tty: true
-    user: ${GID}:${UID}
-
-
-  php-fpm:
-    build:
-      context: ./
-      dockerfile: docker/php/Dockerfile
-    expose:
-      - 9000
-    user: ${GID}:${UID}
-    networks:
-      vladislavnet:
-        aliases:
-          - php-fpm
-    depends_on:
-      - db
-    volumes:
-      - ./:/app
-
   nginx:
+    image: nginx:1.23-alpine
+    volumes:
+      - .:/var/www/app
+      - ./docker/nginx/conf.d:/etc/nginx/conf.d
+      - ./docker/nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./docker/nginx/templates:/etc/nginx/templates
+      - ./.storage/nginx/logs:/var/log/nginx
+    environment:
+      DOMAIN_NAME: ${DOMAIN_NAME}
+      FASTCGI_PASS: ${FASTCGI_PASS}
+    networks:
+      - vladislav_network
+    depends_on:
+      - php
+    restart: unless-stopped
+
+  php:
+    build:
+      context: ./docker/php
+      target: ${YII_ENV}
+      args:
+        PHP_IMAGE_TAG: 8.2-fpm
+    volumes:
+      - .:/var/www/app
     env_file:
       - .env
-    build:
-      context: .
-      dockerfile: docker/nginx/Dockerfile
-      args:
-        - DOMAIN_NAME=${DOMAIN_NAME}
-    ports:
-      - "${NGINX_PUBLIC_PORT}:${NGINX_INTERNAL_PORT}"
-    volumes:
-      - ./:/app
-
-    depends_on:
-      - php-fpm
     networks:
-      vladislavnet:
-        aliases:
-          - nginx
-          - ${DOMAIN_NAME}
-
-    restart: on-failure
-    tty: false
-
+      - vladislav_network
+    restart: unless-stopped
+    depends_on:
+      - mysql
+      - redis
 
   composer_installation:
     image: composer
+    working_dir: /var/www/app
     volumes:
-      - ./:/app
-    command: composer install --ignore-platform-reqs
-    depends_on:
-      - app
-      - db
-      - php-fpm
-      - nginx
-  db:
-    env_file:
-      - .env
-    image: mysql:latest
+      - .:/var/www/app
+    command: composer install
+  redis:
+    image: redis:6.2
+    volumes:
+      - ./.storage/redis:/data
+    command: redis-server --requirepass ${REDIS_PASSWORD}
     networks:
-      vladislavnet:
-        aliases:
-          - db
-          - mysql
-    ports:
-      - "${MYSQL_PUBLIC_PORT}:${MYSQL_PORT}"
+      - vladislav_network
+  mysql:
+    image: mysql:5.7
+    environment:
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
     volumes:
-      - ./docker/var/lib/mysql:/var/lib/mysql
-      - ./docker/var/log/mysql:/var/log/mysql
-     # - ./docker/mysql/init:/docker-entrypoint-initdb.d
-
-
-  migration:
-    env_file:
-      - .env
-    build:
-      dockerfile: docker/migration/Dockerfile
-    volumes:
-      - ./:/app
+      - ./.storage/mysql:/var/lib/mysql
     networks:
-      vladislavnet:
-    depends_on:
-      - db
-      - app
-      - php-fpm
-      - nginx
-    restart: on-failure
+      - vladislav_network
+networks:
+  vladislav_network:
+    name: ${NETWORK_NAME}

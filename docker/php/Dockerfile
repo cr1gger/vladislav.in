@@ -1,54 +1,26 @@
-FROM php:7.4-fpm-alpine
+ARG PHP_IMAGE_TAG=8.2-cli
 
-RUN apk update && apk add --no-cache \
-    autoconf \
-    freetype-dev \
-    libjpeg-turbo-dev \
-    icu-dev \
-    zip \
-    libzip-dev \
-    wget \
-    git \
-    imagemagick-dev \
-    gmp-dev \
-    libreoffice \
-    openjdk11-jre-headless
+FROM php:${PHP_IMAGE_TAG} AS base
 
-RUN apk --no-cache add msttcorefonts-installer fontconfig && \
-    update-ms-fonts && \
-    fc-cache -f
+ARG USER=php
+ARG GROUP=php
 
-RUN apk add \
-    build-base \
-    imagemagick \
-    libxml2-dev
+RUN apt-get update && apt-get install wait-for-it && apt-get install -y unzip
 
-RUN docker-php-ext-install \
-    pdo_mysql \
-    gd \
-    zip \
-    exif \
-    intl \
-    gmp \
-    sockets \
-    soap
+WORKDIR /var/www/app
 
-RUN pecl install \
-    imagick \
-    xlswriter
+COPY custom.ini /usr/local/etc/php/conf.d/custom.ini
+COPY --from=mlocati/php-extension-installer /usr/bin/install-php-extensions /usr/local/bin/
+COPY --from=composer:2 /usr/bin/composer /usr/local/bin/composer
 
-RUN docker-php-ext-enable imagick
+RUN install-php-extensions bcmath sockets opcache gd imagick pdo_mysql intl zip
 
 
-RUN docker-php-ext-enable xlswriter
+FROM base AS dev
+COPY --chown=${USER}:${GROUP} . /var/www/app/
+RUN  ln -s /usr/local/etc/php/php.ini-development /usr/local/etc/php/php.ini
 
-RUN addgroup -S -g 777 develop \
-    && adduser -S -D -u 777 -s /sbin/nologin -h /home/develop -G develop develop
-
-RUN mkdir -p /app/runtime
-
-RUN chown www-data -R /app/runtime
-
-COPY /docker/php/www.conf /usr/local/etc/php-fpm.d/
-
-CMD ["php-fpm"]
+# ---- production image
+FROM base AS prod
+COPY --chown=${USER}:${GROUP} . /var/www/app/
+RUN  ln -s /usr/local/etc/php/php.ini-production /usr/local/etc/php/php.ini

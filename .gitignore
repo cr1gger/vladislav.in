@@ -36,5 +36,7 @@ tests/_support/_generated
 
 #vagrant folder
 /.vagrant
-/docker/var
+
+# docker
 docker-compose.override.yml
+.storage

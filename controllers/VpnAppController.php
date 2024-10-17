@@ -11,5 +11,7 @@ class VpnAppController extends Controller
     public function actionIndex()
     {
         // magic =)
+
+        return $this->render('index');
     }
 }

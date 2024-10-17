@@ -1,0 +1,29 @@
+server {
+    server_name ${DOMAIN_NAME};
+    listen 80;
+    charset utf-8;
+    root /var/www/app/web;
+    client_max_body_size 32m;
+    index index.php;
+    proxy_ignore_client_abort on;
+
+    location / {
+        try_files $uri $uri/ /index.php$is_args$args;
+    }
+
+    location ~ ^/assets/.*\.php$ {
+        deny all;
+    }
+
+    location ~ \.php$ {
+        fastcgi_pass ${FASTCGI_PASS}:9000;
+        fastcgi_param SCRIPT_FILENAME $document_root$fastcgi_script_name;
+        fastcgi_param PATH_INFO $fastcgi_path_info;
+        include fastcgi_params;
+        try_files $uri =404;
+    }
+
+    location ~* /\. {
+        deny all;
+    }
+}
