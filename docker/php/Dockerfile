@@ -7,9 +7,7 @@ ARG GROUP=www-data
 
 RUN apt-get update && apt-get install wait-for-it && apt-get install -y unzip
 
-RUN usermod -u 1000 ${USER} && groupmod -g 1000 www-data
-
-USER "1000:1000"
+RUN usermod -u 1001 ${USER} && groupmod -g 1001 www-data
 
 WORKDIR /var/www/app
 
