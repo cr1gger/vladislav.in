@@ -38,7 +38,7 @@ $config = [
         'user' => [
             'class' => app\models\WebUser::class,
             'identityClass' => \app\common\models\User::class,
-            'enableAutoLogin' => true,
+            'enableAutoLogin' => false,
             'loginUrl' => ['control/auth/login'],
         ],
         'errorHandler' => [
