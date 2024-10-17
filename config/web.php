@@ -15,14 +15,6 @@ $config = [
             'class' => \app\modules\control\Module::class,
         ],
     ],
-    'on beforeRequest' => function ($event) {
-        if(!Yii::$app->request->isSecureConnection){
-            $url = Yii::$app->request->getAbsoluteUrl();
-            $url = str_replace('http:', 'https:', $url);
-            Yii::$app->getResponse()->redirect($url);
-            Yii::$app->end();
-        }
-    },
     'homeUrl' => '/control',
     'components' => [
         'assetManager' => [
@@ -47,7 +39,7 @@ $config = [
             'class' => app\models\WebUser::class,
             'identityClass' => \app\common\models\User::class,
             'enableAutoLogin' => false,
-            'loginUrl' => ['control/auth/login'],
+            'loginUrl' => ['https://vladislav.in/control/auth/login'],
         ],
         'errorHandler' => [
             'errorAction' => '/control/default/error',
