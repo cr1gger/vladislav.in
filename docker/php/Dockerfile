@@ -2,10 +2,14 @@ ARG PHP_IMAGE_TAG=8.2-cli
 
 FROM php:${PHP_IMAGE_TAG} AS base
 
-ARG USER=php
-ARG GROUP=php
+ARG USER=www-data
+ARG GROUP=www-data
 
 RUN apt-get update && apt-get install wait-for-it && apt-get install -y unzip
+
+RUN usermod -u 1000 ${USER} && groupmod -g 1000 www-data
+
+USER "1000:1000"
 
 WORKDIR /var/www/app
 
