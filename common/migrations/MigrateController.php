@@ -67,7 +67,7 @@ class MigrateController extends \yii\console\controllers\MigrateController
         $modulesDir = __DIR__ . '/../../modules/control/modules/';
         $moduleMigrationNamespaces = [];
         foreach (scandir($modulesDir) as $moduleDir) {
-            if ($moduleDir == '.' || $moduleDir == '..') {
+            if ($moduleDir == '.' || $moduleDir == '..' || str_starts_with($moduleDir, '.')) {
                 continue;
             }
 

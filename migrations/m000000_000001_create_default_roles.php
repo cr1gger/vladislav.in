@@ -8,7 +8,7 @@ use Yii;
 /**
  * Class m231211_190013_create_default_roles
  */
-class m231211_190013_create_default_roles extends Migration
+class m000000_000001_create_default_roles extends Migration
 {
     /**
      * {@inheritdoc}
