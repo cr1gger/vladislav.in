@@ -27,6 +27,19 @@
 
 # URL для API 
 ```
-https://{url}/control/api/{module}{controller}{action}
-https://vladislav.in/control/api/users/account/{default: index}
+https://{url}/api/{module}{controller}{action}
+https://vladislav.in/api/users/account/{default: index}
 ```
+
+# Подключение модулей
+
+В админку втроен модуль User.
+Для подключения доп. модулей клонируйте их в `app/modules/control/modules`
+Так же через GII можно создать свой модуль - все начальные шаблоны и миграции уже заложены в Gii шаблон
+
+Список публичных модулей для CMS:
+1. https://github.com/cr1gger/cmsModulePasswords
+2. https://github.com/cr1gger/cms-module-spygame
+ 
+
+
