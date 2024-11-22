@@ -146,7 +146,7 @@ class User extends ActiveRecord implements IdentityInterface
         $sign = hash_hmac(
             'sha256',
             sprintf('%s.%s', $head, $payload),
-            $_ENV['USER_TOKEN_SECRET_KEY']
+            env('USER_TOKEN_SECRET_KEY')
         );
 
 
