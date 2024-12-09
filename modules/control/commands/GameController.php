@@ -2,9 +2,10 @@
 
 namespace app\modules\control\commands;
 
+use yii\console\Controller;
 use yii\helpers\Console;
 
-class GameController
+class GameController extends Controller
 {
     public $sleep = 0;
 
