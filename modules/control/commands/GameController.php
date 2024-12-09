@@ -99,6 +99,8 @@ class GameController extends Controller
         $chatId = env('GAME_TG_CHAT_ID');
         $sessionId = getenv('GAME_SESSION_ID');
 
+        dump($botId, $chatId, $sessionId);
+
         if (!$botId || !$chatId || !$sessionId) {
             throw new \Exception('Не установлены обязательные переменные!');
         }
