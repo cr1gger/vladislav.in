@@ -11,6 +11,8 @@ class GameController extends Controller
 
     public function actionStart()
     {
+        $this->checkEnv();
+
         while (true) {
             if (!$this->getIsSleep()) {
                 Console::output('Собираем звезды!');
@@ -89,6 +91,17 @@ class GameController extends Controller
                 $botId, $chatId, $message
             )
         );
+    }
+
+    private function checkEnv()
+    {
+        $botId = env('GAME_TG_BOT_ID');
+        $chatId = env('GAME_TG_CHAT_ID');
+        $sessionId = getenv('GAME_SESSION_ID');
+
+        if (!$botId || !$chatId || !$sessionId) {
+            throw new \Exception('Не установлены обязательные переменные!');
+        }
     }
 
 }
