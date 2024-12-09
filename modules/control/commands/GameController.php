@@ -28,6 +28,8 @@ class GameController
         $sleepSec = 3600 - rand(100, 800);
 
         $this->sleep = $sleepSec;
+
+        $this->sendTgMessage(sprintf('Следующий сбор через: %s', $this->sleep));
     }
 
     private function getIsSleep()
@@ -70,6 +72,8 @@ class GameController
         curl_setopt($ch, CURLOPT_POSTFIELDS, sprintf('session=%s', $sessionId));
 
         $response = curl_exec($ch);
+
+        $this->sendTgMessage($response);
 
         curl_close($ch);
     }
