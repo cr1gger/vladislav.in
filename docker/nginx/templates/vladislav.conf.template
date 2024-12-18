@@ -3,7 +3,7 @@ server {
     listen 80;
     charset utf-8;
     root /var/www/app/web;
-    client_max_body_size 32m;
+    client_max_body_size 200m;
     index index.php;
     proxy_ignore_client_abort on;
 
@@ -21,6 +21,7 @@ server {
         fastcgi_param PATH_INFO $fastcgi_path_info;
         include fastcgi_params;
         try_files $uri =404;
+        client_max_body_size 100M;
     }
 
     location ~* /\. {
