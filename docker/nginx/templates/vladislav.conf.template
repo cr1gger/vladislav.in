@@ -21,7 +21,6 @@ server {
         fastcgi_param PATH_INFO $fastcgi_path_info;
         include fastcgi_params;
         try_files $uri =404;
-        client_max_body_size 100M;
     }
 
     location ~* /\. {
