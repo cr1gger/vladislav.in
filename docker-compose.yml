@@ -30,8 +30,10 @@ services:
       - vladislav_network
     restart: unless-stopped
     depends_on:
-      - mysql
-      - redis
+      mysql:
+        condition: service_started
+      redis:
+        condition: service_started
     user: ${UID}:${GID}
 
   composer_installation:
@@ -58,6 +60,26 @@ services:
       - ./.storage/mysql:/var/lib/mysql
     networks:
       - vladislav_network
+  supervisor:
+    build:
+      target: base
+      context: .
+      dockerfile: ./docker/supervisor/Dockerfile
+      args:
+        PHP_IMAGE_TAG: 8.2-cli
+    volumes:
+      - .:/var/www/app
+      - ./docker/supervisor/conf.d:/etc/supervisor/conf.d
+      - ./.storage/supervisor:/var/log/app
+      - ./.storage/supervisor:/var/log/supervisor
+    env_file:
+      - .env
+    depends_on:
+      php:
+        condition: service_started
+    networks:
+      - vladislav_network
+
 networks:
   vladislav_network:
     name: ${NETWORK_NAME}

@@ -1,0 +1,11 @@
+[program:telegram_game]
+command=/usr/local/bin/php /var/www/app/yii control/game/start
+process_name=%(program_name)s_%(process_num)02d
+numprocs=1
+directory=/var/www/app
+stdout_logfile=/var/log/app/telegram_game.log
+redirect_stderr=true
+autostart=true
+autorestart=true
+user=www-data
+stopsignal=TERM

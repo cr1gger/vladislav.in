@@ -11,6 +11,7 @@ class GameController extends Controller
 
     public function actionStart()
     {
+        Console::output('Started!');
         $this->checkEnv();
 
         while (true) {
