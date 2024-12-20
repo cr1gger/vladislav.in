@@ -27,6 +27,7 @@ class UserUpdateForm extends Model
                 return $model->user->username != $model->username;
             }],
             [['roles', 'permissions'], 'safe'],
+            [['password'], 'string'],
         ];
     }
 
@@ -85,7 +86,6 @@ class UserUpdateForm extends Model
         }
 
         $transaction = \Yii::$app->db->beginTransaction();
-
         try {
 
             $user = $this->user;
