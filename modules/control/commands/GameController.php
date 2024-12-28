@@ -66,7 +66,7 @@ class GameController extends Controller
             'Sec-Fetch-Mode: cors',
             'Sec-Fetch-Site: same-site',
             'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 YaBrowser/24.12.0.0 Safari/537.36',
-            'X-Application-Version: 0.7.31',
+            'X-Application-Version: 0.7.36',
             'X-Requested-With: XMLHttpRequest',
             'sec-ch-ua: "Chromium";v="130", "YaBrowser";v="24.12", "Not?A_Brand";v="99", "Yowser";v="2.5"',
             'sec-ch-ua-mobile: ?0',
