@@ -35,6 +35,7 @@ services:
       redis:
         condition: service_started
     user: ${UID}:${GID}
+    restart: unless-stopped
 
   composer_installation:
     image: composer
@@ -60,6 +61,7 @@ services:
       - ./.storage/mysql:/var/lib/mysql
     networks:
       - vladislav_network
+    restart: unless-stopped
   supervisor:
     build:
       target: base
@@ -79,6 +81,7 @@ services:
         condition: service_started
     networks:
       - vladislav_network
+    restart: unless-stopped
 
 networks:
   vladislav_network:
