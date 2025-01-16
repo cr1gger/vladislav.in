@@ -28,7 +28,6 @@ services:
       - .env
     networks:
       - vladislav_network
-    restart: unless-stopped
     depends_on:
       mysql:
         condition: service_started
