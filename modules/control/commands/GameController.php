@@ -49,6 +49,8 @@ class GameController extends Controller
 
     private function collect()
     {
+        $headerClientTime = sprintf('X-Client-Time-Diff: %s-0', time());
+        
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://api.tonverse.app/galaxy/collect');
         curl_setopt($ch, CURLOPT_RETURNTRANSFER, true);
@@ -66,8 +68,9 @@ class GameController extends Controller
             'Sec-Fetch-Mode: cors',
             'Sec-Fetch-Site: same-site',
             'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 YaBrowser/24.12.0.0 Safari/537.36',
-            'X-Application-Version: 0.7.36',
+            'X-Application-Version: 0.7.50',
             'X-Requested-With: XMLHttpRequest',
+            $headerClientTime,
             'sec-ch-ua: "Chromium";v="130", "YaBrowser";v="24.12", "Not?A_Brand";v="99", "Yowser";v="2.5"',
             'sec-ch-ua-mobile: ?0',
             'sec-ch-ua-platform: "Windows"',
