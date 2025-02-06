@@ -2,6 +2,7 @@
 
 namespace app\modules\control\commands\Game;
 
+#[AllowDynamicProperties]
 class Config
 {
     private bool $isEnabled = false;
