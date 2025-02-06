@@ -2,12 +2,22 @@
 
 namespace app\modules\control\commands;
 
+use app\modules\control\commands\Game\Config;
+use Yii;
 use yii\console\Controller;
 use yii\helpers\Console;
+use aki\telegram\Telegram;
 
 class GameController extends Controller
 {
     public $sleep = 0;
+    public Telegram $telegram;
+
+    public function init()
+    {
+        parent::init();
+        $this->telegram = Yii::$app->telegram;
+    }
 
     public function actionStart()
     {
@@ -15,9 +25,15 @@ class GameController extends Controller
         $this->checkEnv();
 
         while (true) {
+            $config = $this->getConfig();
+
+            if (!$config->isEnabled()) {
+                continue;
+            }
+
             if (!$this->getIsSleep()) {
                 Console::output('Собираем звезды!');
-                $this->collect();
+                $this->collect($config);
                 $this->enableSleep();
             } else {
                 Console::output(sprintf('Ожидание: %s сек.', $this->sleep));
@@ -26,6 +42,24 @@ class GameController extends Controller
             sleep(1);
         }
     }
+
+
+    public function getConfig(): Config
+    {
+        if (!file_exists('game_config.txt')) {
+            file_put_contents('game_config.txt', serialize(new Config()));
+        }
+
+        $configTxt = file_get_contents('game_config.txt');
+
+        return unserialize($configTxt);
+    }
+
+    public function setConfig(Config $config)
+    {
+        file_put_contents('game_config.txt', serialize($config));
+    }
+
 
     private function enableSleep()
     {
@@ -47,9 +81,11 @@ class GameController extends Controller
         return true;
     }
 
-    private function collect()
+    private function collect(Config $config): void
     {
         $headerClientTime = sprintf('X-Client-Time-Diff: %s-0', time());
+        $version = sprintf('X-Application-Version: %s', $config->getVersion());
+
         
         $ch = curl_init();
         curl_setopt($ch, CURLOPT_URL, 'https://api.tonverse.app/galaxy/collect');
@@ -68,7 +104,7 @@ class GameController extends Controller
             'Sec-Fetch-Mode: cors',
             'Sec-Fetch-Site: same-site',
             'User-Agent: Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/130.0.0.0 YaBrowser/24.12.0.0 Safari/537.36',
-            'X-Application-Version: 0.7.50',
+            $version,
             'X-Requested-With: XMLHttpRequest',
             $headerClientTime,
             'sec-ch-ua: "Chromium";v="130", "YaBrowser";v="24.12", "Not?A_Brand";v="99", "Yowser";v="2.5"',
@@ -109,6 +145,92 @@ class GameController extends Controller
 
         if (!$botId || !$chatId || !$sessionId) {
             throw new \Exception('Не установлены обязательные переменные!');
+        }
+    }
+
+    public function actionLongPoll()
+    {
+        $lastUpdateId = 0;
+
+        while (true) {
+            try {
+                $updates = $this->telegram->getUpdates(['offset' => $lastUpdateId + 1]);
+                if (!empty($updates['result'])) {
+                    $results = $updates['result'];
+                    foreach ($results as $result) {
+                        $updateId = $result['update_id'];
+                        $chatId = $result['message']['chat']['id'] ?? null;
+
+                        if (is_null($chatId)) {
+                            continue;
+                        }
+
+                        $message = $result['message']['text'] ?? '';
+                        $this->execCommand($message, $chatId);
+                        $lastUpdateId = $updateId;
+                    }
+                }
+            } catch (\Exception $e) {
+                $this->telegram->sendMessage([
+                    'chat_id' => '304760316',
+                    'text' => sprintf('Я упал: %s', $e->getMessage())
+                ]);
+                break;
+            }
+
+            sleep(1);
+        }
+    }
+
+    public function execCommand($message, $chatId)
+    {
+        $data = explode(' ', $message, 2);
+        $command = $data[0] ?? null;
+        $args = $data[1] ?? null;
+
+        switch ($command) {
+            case '/enable':
+                $config = $this->getConfig();
+                $config->setIsEnabled(true);
+                $this->setConfig($config);
+                $this->telegram->sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => 'Бот включен!'
+                ]);
+                break;
+            case '/disable':
+                $config = $this->getConfig();
+                $config->setIsEnabled(false);
+                $this->setConfig($config);
+                $this->telegram->sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => 'Бот выключен!'
+                ]);
+                break;
+            case '/setversion':
+                if (empty($args)) {
+                    $this->telegram->sendMessage([
+                        'chat_id' => $chatId,
+                        'text' => 'Укажи версию!'
+                    ]);
+                    break;
+                }
+                $config = $this->getConfig();
+                $config->setVersion($args);
+                $this->setConfig($config);
+                $this->telegram->sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => 'Версия изменена!'
+                ]);
+                break;
+            case '/collect':
+                $this->collect($this->getConfig());
+                break;
+            default:
+                $this->telegram->sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => 'Неизвестная команда'
+                ]);
         }
     }
 

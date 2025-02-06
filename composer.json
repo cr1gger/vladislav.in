@@ -22,7 +22,8 @@
         "kartik-v/yii2-widget-select2": "2.2.5",
         "symfony/dotenv": "^5.4",
         "samdark/yii2-psr-log-target": "^1.1",
-        "monolog/monolog": "^2.9"
+        "monolog/monolog": "^2.9",
+        "aki/yii2-bot-telegram": "^3.1"
     },
     "require-dev": {
         "yiisoft/yii2-debug": "~2.1.0",

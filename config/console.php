@@ -27,6 +27,10 @@ $config = [
             ],
         ],
         'db' => $db,
+        'telegram' => [
+            'class' => 'aki\telegram\Telegram',
+            'botToken' => env('GAME_TG_BOT_ID'),
+        ]
     ],
     'params' => $params,
 
