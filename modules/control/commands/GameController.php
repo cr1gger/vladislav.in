@@ -226,6 +226,12 @@ class GameController extends Controller
             case '/collect':
                 $this->collect($this->getConfig());
                 break;
+            case '/config':
+                $this->telegram->sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => $this->getConfig()->toString()
+                ]);
+                break;
             default:
                 $this->telegram->sendMessage([
                     'chat_id' => $chatId,
@@ -233,5 +239,6 @@ class GameController extends Controller
                 ]);
         }
     }
+
 
 }

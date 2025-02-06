@@ -29,4 +29,9 @@ class Config
     {
         $this->isEnabled = $isEnabled;
     }
+
+    public function toString()
+    {
+        return sprintf("Enabled %s\nVersion: %s", $this->isEnabled, $this->version);
+    }
 }
