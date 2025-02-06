@@ -37,3 +37,4 @@ tests/_support/_generated
 # docker
 docker-compose.override.yml
 .storage
+game_config.txt
