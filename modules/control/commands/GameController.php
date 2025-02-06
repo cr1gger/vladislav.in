@@ -173,7 +173,7 @@ class GameController extends Controller
             } catch (\Exception $e) {
                 $this->telegram->sendMessage([
                     'chat_id' => '304760316',
-                    'text' => sprintf('Я упал: %s', $e->getMessage())
+                    'text' => sprintf("Я упал: %s\n%s", $e->getMessage(), $e->getTraceAsString())
                 ]);
                 break;
             }
