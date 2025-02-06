@@ -2,6 +2,8 @@
 
 namespace app\modules\control\commands\Game;
 
+use AllowDynamicProperties;
+
 #[AllowDynamicProperties]
 class Config
 {
