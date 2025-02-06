@@ -232,12 +232,32 @@ class GameController extends Controller
                     'text' => $this->getConfig()->toString()
                 ]);
                 break;
+            case '/version':
+                $this->telegram->sendMessage([
+                    'chat_id' => $chatId,
+                    'text' => $this->getCurrentVersion()
+                ]);
+                break;
             default:
                 $this->telegram->sendMessage([
                     'chat_id' => $chatId,
                     'text' => 'Неизвестная команда'
                 ]);
         }
+    }
+
+
+    public function getCurrentVersion()
+    {
+        $html = file_get_contents('https://app.tonverse.app');
+        $regex = '/app\.js\?(\d+\.\d+\.\d+)/';
+        preg_match($regex, $html, $matches);
+
+        if (!empty($matches)) {
+            return $matches[1];
+        }
+
+        return 'Не найдена версия, пиздуй руками искать!';
     }
 
 
