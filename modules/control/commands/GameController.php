@@ -175,7 +175,6 @@ class GameController extends Controller
                     'chat_id' => '304760316',
                     'text' => sprintf("Я упал: %s\n%s", $e->getMessage(), $e->getTraceAsString())
                 ]);
-                break;
             }
 
             sleep(1);
